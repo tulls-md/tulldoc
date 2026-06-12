@@ -1,0 +1,15 @@
+@import "./reset.css";
+@import "./_themes/tulls-light.theme.css";
+
+@import "./_variables/space.css";
+@import "./_variables/radius.css";
+
+@import "./_fonts/golos.css";
+
+body {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  font-size: 14px;
+}

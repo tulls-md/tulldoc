@@ -1,0 +1,108 @@
+---
+title: Ручные примеры
+description: DocManualExample - произвольные примеры с кастомным сценарием
+---
+
+# Ручные примеры
+
+Ручной пример используется, когда нужно показать конкретный сценарий использования,
+не укладывающийся в перебор значений одного пропа.
+
+```ts
+import { ButtonLoadingExample } from "@/examples/button/button-loading";
+import { ButtonGroupExample } from "@/examples/button/button-group";
+
+examples: [
+  {
+    title: "Состояние загрузки",
+    description: "Кнопка во время асинхронной операции.",
+    example: <ButtonLoadingExample />,
+  },
+  {
+    title: "Группа кнопок",
+    example: <ButtonGroupExample />,
+  },
+]
+```
+
+## DocManualExample
+
+| Поле          | Тип            | Описание                          |
+| ------------- | -------------- | --------------------------------- |
+| `title`       | `string`       | Заголовок секции (обязательное)   |
+| `description` | `string`       | Описание под заголовком           |
+| `example`     | `ReactElement` | Компонент-пример из `examplesDir` |
+
+## Структура файла примера
+
+Файл ручного примера - React-компонент с default export.
+Располагается в `examplesDir`:
+
+```tsx
+// src/examples/button/button-loading.tsx
+import { useState } from "react";
+import { Button } from "@my-org/ui";
+
+export default function ButtonLoadingExample() {
+  const [loading, setLoading] = useState(false);
+
+  return (
+    <Button
+      loading={loading}
+      onClick={() => {
+        setLoading(true);
+        setTimeout(() => setLoading(false), 2000);
+      }}
+    >
+      {loading ? "Загрузка..." : "Отправить"}
+    </Button>
+  );
+}
+```
+
+Код показывается целиком - со всеми импортами и flatten-code для вложенных примеров.
+
+## Вложенные примеры
+
+Ручной пример может использовать вспомогательные компоненты из `examplesDir`.
+Правила те же, что для `ComponentPreview`:
+
+- Вложенный пример используется как `<Component />` без пропсов и детей
+- Циклические импорты не поддерживаются
+
+```tsx
+// src/examples/form/form-with-button.tsx
+import { FormFieldExample } from "./form-field"; // <- из examplesDir, будет встроен
+
+export default function FormWithButtonExample() {
+  return (
+    <form>
+      <FormFieldExample />
+      <Button type="submit">Отправить</Button>
+    </form>
+  );
+}
+```
+
+## Смешивание авто и ручных примеров
+
+Авто и ручные примеры можно свободно смешивать в одном массиве `examples`.
+Порядок в секции «Примеры» сохраняется:
+
+```ts
+examples: [
+  { prop: "variant", title: "Стили" },         // автопример
+  {
+    title: "Группа кнопок",                    // ручной пример
+    example: <ButtonGroupExample />,
+  },
+  { prop: "size", title: "Размеры" },          // автопример
+  { prop: "disabled", disabled: true },        // отключён
+]
+```
+
+## Как tulldoc находит файл примера
+
+Tulldoc читает JSX-тег в поле `example` статически из AST `.doc.tsx`.
+Имя JSX-элемента (`ButtonLoadingExample`) используется для поиска файла
+с такой функцией в `examplesDir`. Убедитесь, что имя функции и имя JSX-тега совпадают.

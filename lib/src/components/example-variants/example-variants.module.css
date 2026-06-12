@@ -1,0 +1,43 @@
+.Root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4x);
+}
+
+.Items {
+  display: flex;
+  gap: var(--space-8x);
+  height: 100%;
+  padding: var(--space-8x);
+  overflow: auto;
+}
+
+.Row {
+  flex-flow: row wrap;
+  align-items: flex-start;
+}
+
+.Grid {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.Item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4x);
+  align-items: flex-start;
+
+  border: 1px dashed var(--green-7);
+  padding: var(--space-8x);
+  border-radius: 10px;
+}
+
+.Cell {
+  height: 100%;
+  padding: var(--space-8x);
+}
+
+.Label {
+  color: var(--color-text-secondary, #64748b);
+}

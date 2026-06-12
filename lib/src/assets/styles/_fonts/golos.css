@@ -1,0 +1,62 @@
+@import "@fontsource/golos-text/400.css";
+@import "@fontsource/golos-text/500.css";
+@import "@fontsource/golos-text/600.css";
+@import "@fontsource/golos-text/700.css";
+
+:root {
+  /* Шрифт */
+  --font-sans:
+    "Golos Text", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* Размеры */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.875rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 3rem;
+
+  /* Веса */
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  /* Межстрочные */
+  --leading-tight: 1.15;
+  --leading-normal: 1.4;
+  --leading-relaxed: 1.6;
+
+  /* Роли */
+  --font-h1: var(--font-bold) var(--text-4xl)/var(--leading-tight)
+    var(--font-sans);
+  --font-h2: var(--font-bold) var(--text-3xl)/var(--leading-tight)
+    var(--font-sans);
+  --font-h3: var(--font-semibold) var(--text-2xl)/var(--leading-tight)
+    var(--font-sans);
+  --font-h4: var(--font-semibold) var(--text-xl)/var(--leading-tight)
+    var(--font-sans);
+  --font-h5: var(--font-medium) var(--text-lg)/var(--leading-tight)
+    var(--font-sans);
+
+  --font-body: var(--font-regular) var(--text-base)/var(--leading-normal)
+    var(--font-sans);
+  --font-body-sm: var(--font-regular) var(--text-sm)/var(--leading-normal)
+    var(--font-sans);
+  --font-body-lg: var(--font-regular) var(--text-md)/var(--leading-relaxed)
+    var(--font-sans);
+
+  --font-caption: var(--font-regular) var(--text-xs)/var(--leading-normal)
+    var(--font-sans);
+
+  --font-btn-sm: var(--font-medium) var(--text-sm)/1 var(--font-sans);
+  --font-btn-md: var(--font-medium) var(--text-base)/1 var(--font-sans);
+  --font-btn-lg: var(--font-semibold) var(--text-md)/1 var(--font-sans);
+}
+
+body {
+  font-family: var(--font-sans), sans-serif;
+}

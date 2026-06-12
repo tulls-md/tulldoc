@@ -1,0 +1,76 @@
+---
+title: Главный пример
+description: Поле mainExample - ключевой пример, показываемый вверху страницы
+---
+
+# Главный пример
+
+`mainExample` - самый важный пример компонента. Он рендерится сразу под описанием,
+перед анатомией и секцией с автопримерами. Код показывается полностью - с импортами.
+
+```ts
+import { ButtonBasicExample } from "@/examples/button/button-basic";
+
+return {
+  component: Button,
+  mainExample: <ButtonBasicExample />,
+};
+```
+
+## Структура файла примера
+
+Файл главного примера - обычный React-компонент с default export.
+Располагается в `examplesDir`:
+
+```tsx
+// src/examples/button/button-basic.tsx
+import { Button } from "@my-org/ui";
+
+export default function ButtonBasicExample() {
+  return (
+    <Button variant="primary" size="md">
+      Сохранить
+    </Button>
+  );
+}
+```
+
+Tulldoc находит файл по JSX-тегу в `mainExample` - статически, из AST `.doc.tsx`.
+Имя функции используется для поиска файла в `examplesDir`.
+
+## Код с импортами
+
+В отличие от автопримеров, для `mainExample` показывается код целиком:
+сам файл примера + все импорты, «расплющенные» через flatten-code.
+
+Если пример использует вспомогательные компоненты из `examplesDir`, они встраиваются
+inline. Подробнее о механизме - в разделе «ComponentPreview -> Flatten-code».
+
+## Фиксированная высота
+
+Если главный пример занимает всё окно браузера, добавьте `previewHeight`:
+
+```tsx
+// src/examples/dialog/dialog-basic.tsx
+export const previewHeight = 500;
+
+export default function DialogBasicExample() {
+  return (
+    <Dialog open title="Заголовок">
+      Содержимое
+    </Dialog>
+  );
+}
+```
+
+## Где рендерится
+
+```
+h1 Заголовок
+p  Описание
+   [mainExample]         <- здесь
+h2 Анатомия
+h2 Примеры
+   ...
+h2 API
+```

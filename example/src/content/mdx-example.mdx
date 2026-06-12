@@ -1,0 +1,178 @@
+---
+title: Пример MDX
+description: Пример документации написанный на Tulldoc
+---
+
+import { Anatomy } from "@tulls-md/tulldoc";
+import { Button } from "@/components";
+
+# Это пример MDX документации
+
+Эта страница демонстрирует возможности `.mdx`-файлов в tulldoc: форматирование
+текста, таблицы, блоки кода с подсветкой, живые React-компоненты и таблицу
+API-пропсов. Каждый раздел ниже описывает один из приёмов.
+
+## Форматирование текста
+
+Внутри MDX работает обычный Markdown: **жирный текст**, _курсив_,
+~~зачёркнутый~~ и `инлайн-код`. Ссылки тоже работают — например,
+[на обзорную страницу](/overview).
+
+> Цитаты удобны для важных замечаний: tulldoc сам построит оглавление
+> страницы из заголовков `h2` и `h3`.
+
+Списки бывают маркированные и нумерованные:
+
+- пункт первый
+- пункт второй
+  - вложенный пункт
+- пункт третий
+
+1. установить пакет
+2. написать `.mdx`-файл
+3. получить готовый сайт
+
+## Таблицы
+
+Таблицы пишутся в синтаксисе GFM — строка заголовка, разделитель
+и строки данных. Выравнивание задаётся двоеточиями в разделителе:
+
+| Возможность      | Синтаксис     | Поддержка |
+| :--------------- | :------------ | --------: |
+| Таблицы          | GFM           |        ✅ |
+| Подсветка кода   | ` ```tsx `    |        ✅ |
+| Живые компоненты | импорт + JSX  |        ✅ |
+| Frontmatter      | YAML в начале |        ✅ |
+
+## Примеры кода
+
+Блоки кода в тройных кавычках рендерятся компонентом `CodeBlock`
+с подсветкой синтаксиса. Язык указывается после открывающих кавычек:
+
+```tsx
+import { Button } from "@/components";
+
+export default function Page() {
+  return <Button label="Нажми меня" />;
+}
+```
+
+Подсвечиваются и другие языки, например CSS:
+
+```css
+.Button {
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
+}
+```
+
+Или команды терминала:
+
+```bash
+npm install @tulls-md/tulldoc
+npm run dev
+```
+
+## Живые компоненты
+
+MDX позволяет импортировать React-компоненты прямо в документ
+и рендерить их среди текста. Компонент `Preview` оборачивает пример
+в рамку с фоном — так результат отделён от текста страницы:
+
+<Preview>
+  <Button label="Живая кнопка" />
+</Preview>
+
+Код выше — это настоящий JSX внутри `.mdx`-файла:
+
+```mdx
+import { Button } from "@/components";
+
+<Preview>
+  <Button label="Живая кнопка" />
+</Preview>
+```
+
+Если у контента нет собственной высоты (например, `position: fixed`),
+её можно зафиксировать пропом `height`:
+
+```mdx
+<Preview height={240}>
+  <FullscreenDemo />
+</Preview>
+```
+
+## Анатомия
+
+Компонент `Anatomy` рисует схему строения компонента — вложенные
+подписанные блоки. Обычно он используется в `*.doc.tsx`, но импортируется
+и в MDX напрямую из `@tulls-md/tulldoc`:
+
+<Anatomy.Root>
+  <Anatomy.Part label="Button">
+    <Anatomy.Part label="label" />
+  </Anatomy.Part>
+</Anatomy.Root>
+
+`Anatomy.Part` вкладываются друг в друга на любую глубину, а проп `grow`
+растягивает часть на свободное место:
+
+```mdx
+import { Anatomy } from "@tulls-md/tulldoc";
+
+<Anatomy.Root>
+  <Anatomy.Part label="Button">
+    <Anatomy.Part label="icon" />
+    <Anatomy.Part label="label" grow />
+  </Anatomy.Part>
+</Anatomy.Root>
+```
+
+## Автодокументирование пропа
+
+Компонент `ComponentExamples` сам перебирает значения пропа по его
+TS-типу (union литералов или `boolean`), рендерит вариант для каждого
+значения и генерирует код — это тот же механизм, что у записей
+`examples: [{ prop: "..." }]` в `*.doc.tsx`.
+
+Нужен компонент-пример в `examplesDir`, принимающий этот проп.
+Проп `path` — путь к файлу примера без расширения:
+
+<ComponentExamples path="components/button-disabled.example" prop="disabled" />
+
+```mdx
+<ComponentExamples path="components/button-disabled.example" prop="disabled" />
+```
+
+Раскладка вариантов настраивается пропом `view` (`"row"`, `"grid"`
+или `"cell"`), а остальные пропсы примера задаются через `defaultArgs`:
+
+```mdx
+<ComponentExamples
+  path="components/button-disabled.example"
+  prop="disabled"
+  view="grid"
+  defaultArgs={{ label: "Кнопка" }}
+/>
+```
+
+## API
+
+Таблицу пропсов не нужно писать вручную — компонент `ComponentProps`
+извлекает их прямо из исходника компонента: имена, типы, обязательность,
+значения по умолчанию и JSDoc-комментарии. Проп `src` — путь к файлу
+относительно `componentsDir` (без расширения):
+
+```mdx
+<ComponentProps src="button/button" />
+```
+
+### Button
+
+<ComponentProps src="button/button" />
+
+Если экспорт назван не так, как файл, имя задаётся явно:
+
+```mdx
+<ComponentProps src="button/button" name="Button" />
+```

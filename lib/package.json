@@ -1,0 +1,58 @@
+{
+  "name": "@tulls-md/tulldoc",
+  "private": false,
+  "version": "0.1.0",
+  "description": "Библиотека для быстрого создания сайтов документации компонентных библиотек на базе Next.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tulls-md/tulldoc.git",
+    "directory": "lib"
+  },
+  "keywords": [
+    "documentation",
+    "nextjs",
+    "react",
+    "mdx",
+    "component-library",
+    "docs-generator"
+  ],
+  "type": "module",
+  "files": [
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./server": "./src/server.ts",
+    "./config": "./src/config.ts"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.29.7",
+    "@fontsource/golos-text": "^5.2.8",
+    "@mdx-js/loader": "^3.1.1",
+    "@mdx-js/react": "^3.1.1",
+    "@next/mdx": "^16.2.7",
+    "clsx": "^2.1.1",
+    "gray-matter": "^4.0.3",
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.1",
+    "remark-mdx-frontmatter": "^5.2.0",
+    "server-only": "^0.0.1",
+    "shiki": "^4.2.0",
+    "typescript": "^5"
+  },
+  "peerDependencies": {
+    "next": ">=16",
+    "react": ">=19",
+    "react-dom": ">=19"
+  },
+  "devDependencies": {
+    "@babel/types": "^7.29.7",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19"
+  }
+}

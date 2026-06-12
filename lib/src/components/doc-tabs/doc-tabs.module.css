@@ -1,0 +1,28 @@
+.Root {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--color-border, #e2e8f0);
+  margin-bottom: 32px;
+}
+
+.Tab {
+  padding: 8px 16px;
+  text-decoration: none;
+  color: var(--color-text-secondary, #64748b);
+  font-size: 14px;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.Tab:hover {
+  color: var(--color-text, #0f172a);
+}
+
+.TabActive {
+  color: var(--color-text, #0f172a);
+  border-bottom-color: var(--color-accent, #3b82f6);
+}

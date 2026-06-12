@@ -1,0 +1,11 @@
+{
+  "title": "Текстовые документы MDX",
+  "pages": [
+    "files",
+    "built-in",
+    "helpers-setup",
+    "component-preview",
+    "component-examples",
+    "component-props"
+  ]
+}

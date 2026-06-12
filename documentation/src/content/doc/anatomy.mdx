@@ -1,0 +1,89 @@
+---
+title: Анатомия
+description: Поле anatomy - схема составных частей компонента
+---
+
+# Анатомия
+
+`anatomy` - необязательное поле `DocMeta`, принимающее `ReactNode`.
+Рендерится под `mainExample` и перед секцией примеров.
+
+```ts
+return {
+  component: Button,
+  anatomy: <ButtonAnatomy />,
+};
+```
+
+## Компонент Anatomy
+
+Tulldoc экспортирует `Anatomy.Root` и `Anatomy.Part` для построения схем анатомии.
+
+### Anatomy.Root
+
+Контейнер, выравнивающий части в ряд.
+
+```tsx
+import { Anatomy } from "@tulls-md/tulldoc";
+
+<Anatomy.Root>{/* части компонента */}</Anatomy.Root>;
+```
+
+### Anatomy.Part
+
+Отдельная часть компонента с подписью.
+
+```tsx
+<Anatomy.Part label="Icon" />
+<Anatomy.Part label="Label" grow />
+<Anatomy.Part label="Suffix" />
+```
+
+| Проп       | Тип         | По умолчанию | Описание                               |
+| ---------- | ----------- | ------------ | -------------------------------------- |
+| `label`    | `string`    | -            | Подпись части (обязательное)           |
+| `grow`     | `boolean`   | `false`      | Растянуть часть (`flex: 1`)            |
+| `children` | `ReactNode` |              | Дополнительное содержимое внутри части |
+
+## Пример схемы кнопки
+
+```tsx
+// src/examples/button/button-anatomy.tsx
+import { Anatomy } from "@tulls-md/tulldoc";
+
+export function ButtonAnatomy() {
+  return (
+    <Anatomy.Root>
+      <Anatomy.Part label="LeadingIcon" />
+      <Anatomy.Part label="Label" grow />
+      <Anatomy.Part label="TrailingIcon" />
+    </Anatomy.Root>
+  );
+}
+```
+
+Использование в `.doc.tsx`:
+
+```ts
+import { ButtonAnatomy } from "@/examples/button/button-anatomy";
+
+return {
+  component: Button,
+  anatomy: <ButtonAnatomy />,
+};
+```
+
+## Где рендерится
+
+```
+h1 Заголовок
+p  Описание
+   [mainExample]
+h2 Анатомия         <- здесь
+   [anatomy]
+h2 Примеры
+   ...
+h2 API
+```
+
+Секция «Анатомия» появляется только если поле `anatomy` задано.

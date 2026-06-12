@@ -1,0 +1,23 @@
+.Root {
+  width: 100%;
+}
+
+.Required {
+  color: var(--green-9);
+  margin-left: 2px;
+}
+
+.Description {
+  color: var(--gray-10);
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.Empty {
+  color: var(--gray-10);
+}
+
+.Inherited {
+  color: var(--gray-10);
+  margin-top: var(--space-2x);
+}

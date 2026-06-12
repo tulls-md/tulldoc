@@ -1,0 +1,9 @@
+.Root {
+  margin: 0;
+  padding: var(--space-4x) var(--space-6x);
+  border: 1px dashed var(--color-gray-200, #e5e7eb);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--color-text-secondary, #64748b);
+  background-color: var(--gray-3, #f8fafc);
+}

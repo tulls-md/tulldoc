@@ -1,0 +1,28 @@
+@import "../_colors/color-gray.css";
+@import "../_colors/color-green.css";
+@import "../_colors/color-white.css";
+
+:root {
+  /* Backgrounds */
+  --application-background: var(--green-2);
+
+  /* Title */
+  --application-title-background: var(--green-9);
+
+  /* Text */
+  --color-text-white: var(--color-white);
+
+  /* Tags */
+  --tag-background: var(--green-3);
+  --tag-background-hover: var(--green-4);
+  --tag-color: var(--green-12);
+  --tag-border: var(--green-6);
+  --tag-border-hover: var(--green-7);
+
+  /* controls */
+  --color-control-primary-background: var(--green-9);
+  --color-control-primary-text: var(--color-white);
+
+  --color-control-secondary-background: var(--green-a3);
+  --color-control-secondary-text: var(--green-a11);
+}

@@ -1,0 +1,12 @@
+.Root {
+  display: flex;
+  align-items: flex-start;
+  gap: 48px;
+  max-width: 1000px;
+  margin-inline: auto;
+}
+
+.Content {
+  flex: 1;
+  min-width: 0;
+}

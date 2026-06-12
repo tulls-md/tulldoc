@@ -1,10 +1,6 @@
-# Tulldoc
+# @tulls-md/tulldoc
 
-> Библиотека в разработке и еще не готова к публикации и использованию
-
-<img src="assets/logo.jpeg" alt="Tulldoc" width="300" />
-
-`@tulls-md/tulldoc` - библиотека для быстрого создания сайтов документации компонентных библиотек на базе Next.js.
+Библиотека для быстрого создания сайтов документации компонентных библиотек на базе Next.js.
 
 Документация и примеры строятся прямо из исходного кода компонентов: таблицы пропсов извлекаются из TypeScript-типов, примеры вариантов генерируются автоматически по union-типам - документация не расходится с кодом.
 
@@ -17,7 +13,15 @@
 - **Готовые UI-блоки** - `CodeBlock`, `Preview`, `PropsTable`, `Anatomy`, `DocTabs`, `DocNotice` и другие
 - **Подсветка синтаксиса** через Shiki, поддержка GFM и frontmatter
 
+## Установка
+
+```bash
+npm install @tulls-md/tulldoc
+```
+
 Peer-зависимости: `next >= 16`, `react >= 19`, `react-dom >= 19`.
+
+## Быстрый старт
 
 Оберните конфиг Next.js:
 
@@ -61,8 +65,6 @@ export const generateMetadata = docs.generateMetadata;
 export default docs.Page;
 ```
 
-Полная инструкция - в разделе «Начало работы» документации.
-
 ## Точки входа пакета
 
 | Путь                       | Назначение                                                              |
@@ -71,31 +73,8 @@ export default docs.Page;
 | `@tulls-md/tulldoc/server` | Серверные хелперы: `createDocSource`, `createComponentPreview` и другие |
 | `@tulls-md/tulldoc/config` | `withTulldoc` - обёртка для `next.config.ts`                            |
 
-## Структура репозитория
+Полная документация и исходный код - в [репозитории tulls-md/tulldoc](https://github.com/tulls-md/tulldoc).
 
-Это pnpm-монорепозиторий:
+## Лицензия
 
-| Пакет            | Описание                                                       |
-| ---------------- | -------------------------------------------------------------- |
-| `lib/`           | Библиотека `@tulls-md/tulldoc`                                 |
-| `documentation/` | Сайт документации tulldoc (сам на нём и построен)              |
-| `example/`       | Пример проекта документации (в планах)                         |
-| `example-lib/`   | Пример компонентной библиотеки для документирования (в планах) |
-
-## Разработка
-
-Требования: Node.js >= 24, pnpm >= 10.
-
-```bash
-pnpm install
-
-# запустить сайт документации (dev-режим)
-pnpm tulldoc:docs
-
-# запустить сайт примера (dev-режим)
-pnpm tulldoc:examle
-
-# форматирование
-pnpm format
-pnpm format:check
-```
+MIT

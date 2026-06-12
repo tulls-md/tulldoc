@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+.expo/
+web-build/
+expo-env.d.ts
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+.next
+
+# Debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# Logs
+*.log

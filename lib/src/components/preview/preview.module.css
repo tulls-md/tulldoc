@@ -1,0 +1,9 @@
+.Root {
+  position: relative;
+  height: fit-content;
+  min-height: 56px;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid var(--color-gray-200, #e5e7eb);
+  transform: translateZ(0);
+}

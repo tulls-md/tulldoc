@@ -1,0 +1,82 @@
+---
+title: ComponentPreview
+description: Хелпер для отображения примера компонента с полным исходным кодом
+---
+
+# ComponentPreview
+
+`ComponentPreview` рендерит компонент-пример рядом с его исходным кодом.
+Код показывается в сворачиваемом блоке со всеми импортами.
+
+```mdx
+<ComponentPreview path="button/button-basic" />
+```
+
+## Проп path
+
+`path` - путь к файлу примера **относительно `examplesDir`**, без расширения `.tsx`:
+
+```
+examplesDir/
+└── button/
+    └── button-basic.tsx   ->  path="button/button-basic"
+```
+
+## Структура файла примера
+
+Файл примера должен иметь default export - React-компонент без обязательных пропсов:
+
+```tsx
+// src/examples/button/button-basic.tsx
+import { Button } from "@my-org/ui";
+
+export default function ButtonBasicExample() {
+  return <Button variant="primary">Нажми меня</Button>;
+}
+```
+
+## Flatten-code: как формируется показываемый код
+
+Tulldoc не показывает файл дословно. Перед показом он «расплющивает» пример:
+находит все импорты из той же `examplesDir` и встраивает их код на место использования.
+
+Это позволяет разбивать большие примеры на несколько файлов, а в документации
+показывать их как один связный фрагмент:
+
+```tsx
+// src/examples/button/button-group.tsx
+import { ButtonGroupItem } from "./button-group-item"; // <- вложенный пример
+
+export default function ButtonGroupExample() {
+  return (
+    <div>
+      <ButtonGroupItem label="A" />
+      <ButtonGroupItem label="B" />
+    </div>
+  );
+}
+```
+
+После расплющивания показывается единый файл, где `ButtonGroupItem` раскрыт inline.
+
+### Ограничения flatten-code
+
+- Вложенный пример должен использоваться как `<Component />` - **без пропсов и детей**
+- Циклические импорты не поддерживаются
+- Работает только с импортами **из `examplesDir`**; импорты из `node_modules` остаются как есть
+
+## Фиксированная высота превью
+
+Некоторые компоненты занимают всё окно браузера (`position: fixed`, `height: 100dvh`).
+Чтобы область превью не схлопнулась, добавьте в файл примера:
+
+```tsx
+export const previewHeight = 400; // высота в пикселях
+
+export default function DialogExample() {
+  return <Dialog open />;
+}
+```
+
+Tulldoc читает это значение статически и передаёт в контейнер превью.
+Переменная `previewHeight` в показываемом коде скрывается автоматически.

@@ -1,0 +1,34 @@
+.Root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4x);
+  background: var(--green-1);
+  border: 1px dashed var(--green-6);
+  border-radius: 10px;
+  padding: var(--space-8x);
+}
+
+.Part {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4x);
+  border: 1.5px dashed var(--green-7);
+  border-radius: 8px;
+  padding: var(--space-10x) var(--space-8x) var(--space-8x);
+  min-height: 48px;
+}
+
+.Label {
+  position: absolute;
+  top: -10px;
+  left: var(--space-6x);
+  background: var(--green-9);
+  color: var(--color-text-white);
+  font-size: 11px;
+  font-weight: 500;
+  font-family: ui-monospace, "Cascadia Code", "Fira Code", monospace;
+  padding: 1px var(--space-4x);
+  border-radius: var(--radius-full, 999px);
+  white-space: nowrap;
+}

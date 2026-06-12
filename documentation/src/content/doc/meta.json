@@ -1,0 +1,12 @@
+{
+  "title": "Автодокументирование компонентов",
+  "pages": [
+    "overview",
+    "doc-meta",
+    "main-example",
+    "auto-examples",
+    "manual-examples",
+    "anatomy",
+    "api-table"
+  ]
+}

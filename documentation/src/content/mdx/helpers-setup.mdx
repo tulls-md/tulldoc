@@ -1,0 +1,96 @@
+---
+title: Подключение MDX-хелперов
+description: Как создать и зарегистрировать ComponentPreview, ComponentExamples и ComponentProps
+---
+
+# Подключение MDX-хелперов
+
+> Этот раздел актуален только для документирования **React-компонентов**.
+> Для обычных `.mdx`-статей хелперы не нужны — `getMDXComponents()` без аргументов уже всё подключает.
+
+`ComponentPreview`, `ComponentExamples` и `ComponentProps` — серверные компоненты,
+которые создаются фабричными функциями. Каждая фабрика принимает путь к папке
+и функцию динамического импорта, возвращает готовый React-компонент.
+
+Создавать их нужно один раз - в `docs.ts` - и передавать в `getMDXComponents`.
+
+## Шаг 1 - создать хелперы в docs.ts
+
+```ts
+// src/docs.ts
+import { join } from "path";
+import {
+  createDocSource,
+  createComponentPreview,
+  createComponentExamples,
+  createComponentProps,
+} from "@tulls-md/tulldoc/server";
+
+const examplesDir = join(process.cwd(), "src/examples");
+const componentsDir = join(process.cwd(), "../../packages/ui/src/components");
+
+const importExample = (path: string) =>
+  import(`./examples/${path}.tsx`) as Promise<{ default: React.ComponentType }>;
+
+export const docs = createDocSource({
+  contentDir: join(process.cwd(), "src/content"),
+  importContent: (path) => import(`./content/${path}.mdx`),
+  lang: "ru",
+});
+
+export const ComponentPreview = createComponentPreview(
+  examplesDir,
+  importExample,
+  "ru",
+);
+export const ComponentExamples = createComponentExamples(
+  examplesDir,
+  importExample,
+  "ru",
+);
+export const ComponentProps = createComponentProps(componentsDir, "ru");
+```
+
+Последний аргумент `lang` необязателен - он задаёт язык подписей («Посмотреть код»,
+«Скрыть код», «Компонент не принимает пропсов»), по умолчанию английский.
+
+Все три хелпера - асинхронные серверные компоненты. Они читают файлы и запускают
+TypeScript-анализ во время рендеринга на сервере, не в браузере.
+
+## Шаг 2 - зарегистрировать в mdx-components.tsx
+
+```tsx
+// src/mdx-components.tsx
+import type { MDXComponents } from "mdx/types";
+import { getMDXComponents } from "@tulls-md/tulldoc";
+import { ComponentPreview, ComponentExamples, ComponentProps } from "@/docs";
+
+export function useMDXComponents(): MDXComponents {
+  return getMDXComponents({
+    ComponentPreview,
+    ComponentExamples,
+    ComponentProps,
+  });
+}
+```
+
+После этого все три компонента доступны в любом `.mdx`-файле без импортов:
+
+```mdx
+<ComponentPreview path="button/button-basic" />
+
+<ComponentExamples path="button/button-variants" prop="variant" />
+
+<ComponentProps src="button/button" />
+```
+
+## Когда нужны не все хелперы
+
+Если `examplesDir` или `componentsDir` у вас нет, создавайте только нужные:
+
+```ts
+// только таблица пропсов, без примеров
+export const ComponentProps = createComponentProps(componentsDir);
+```
+
+Просто не передавайте ненужные в `getMDXComponents` - в MDX они будут недоступны.

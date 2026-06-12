@@ -1,0 +1,60 @@
+.Root {
+  width: 220px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--gray-5);
+  padding: var(--space-8x);
+  overflow-y: auto;
+}
+
+.List {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1x);
+}
+
+.Link {
+  display: block;
+  padding: var(--space-2x) var(--space-4x);
+  border-radius: 6px;
+  color: var(--gray-11);
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 1.5;
+  transition:
+    background 120ms,
+    color 120ms;
+}
+
+.Link:hover {
+  background: var(--gray-3);
+  color: var(--gray-12);
+}
+
+.LinkActive {
+  background: var(--gray-4);
+  color: var(--gray-12);
+  font-weight: 500;
+}
+
+.ExternalIcon {
+  margin-left: var(--space-1x);
+  font-size: 10px;
+  color: var(--gray-9);
+}
+
+.Group {
+  margin-top: var(--space-6x);
+}
+
+.GroupLabel {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gray-9);
+  padding: var(--space-2x) var(--space-4x) var(--space-2x);
+}

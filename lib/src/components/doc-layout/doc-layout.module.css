@@ -1,0 +1,17 @@
+.Body {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.Content {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  min-height: 0;
+}
+
+.Main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 48px 64px;
+}

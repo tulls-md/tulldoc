@@ -1,0 +1,6 @@
+packages:
+  - "documentation"
+  # в планах
+  - "example"
+  - "example-lib"
+  - "lib"

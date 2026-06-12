@@ -1,0 +1,136 @@
+---
+title: Начало работы
+description: Установка и минимальная настройка проекта документации
+---
+
+# Начало работы
+
+## Установка
+
+```bash
+npm install @tulls-md/tulldoc
+```
+
+Peer-зависимости: `next >= 16`, `react >= 19`, `react-dom >= 19`.
+
+## Структура файлов
+
+Минимальный проект выглядит так:
+
+```
+my-docs/
+├── next.config.ts
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   └── [...slug]/
+│   │       └── page.tsx
+│   ├── content/
+│   │   └── overview.mdx
+│   ├── docs.ts
+│   └── mdx-components.tsx
+```
+
+## next.config.ts
+
+Оберните конфиг через `withTulldoc` - он подключает MDX-плагин и нужные `pageExtensions`.
+
+```ts
+import { withTulldoc } from "@tulls-md/tulldoc/config";
+
+export default withTulldoc();
+```
+
+Дополнительные опции `NextConfig` передаются первым аргументом:
+
+```ts
+export default withTulldoc({
+  transpilePackages: ["@my-org/ui"],
+});
+```
+
+## mdx-components.tsx
+
+Next.js требует файл `mdx-components.tsx` в корне `src/` для глобальных MDX-компонентов.
+Подключите компоненты tulldoc (`CodeBlock`, `Preview` и другие):
+
+```tsx
+import type { MDXComponents } from "mdx/types";
+import { getMDXComponents } from "@tulls-md/tulldoc";
+
+export function useMDXComponents(): MDXComponents {
+  return getMDXComponents();
+}
+```
+
+Чтобы добавить свои компоненты - передайте их в `getMDXComponents`:
+
+```tsx
+import { MyCallout } from "@/components/callout";
+
+export function useMDXComponents(): MDXComponents {
+  return getMDXComponents({ Callout: MyCallout });
+}
+```
+
+## docs.ts
+
+Создайте `src/docs.ts` - центральный источник данных для роутера.
+
+```ts
+import { join } from "path";
+import { createDocSource } from "@tulls-md/tulldoc/server";
+
+export const docs = createDocSource({
+  contentDir: join(process.cwd(), "src/content"),
+  importContent: (path) => import(`./content/${path}.mdx`),
+  lang: "ru",
+});
+```
+
+### Все опции `createDocSource`
+
+| Опция           | Тип                                             | Описание                                                   |
+| --------------- | ----------------------------------------------- | ---------------------------------------------------------- |
+| `contentDir`    | `string`                                        | Абсолютный путь до папки с контентом                       |
+| `importContent` | `(path) => Promise<{ default: ComponentType }>` | Динамический импорт `.mdx`-файлов                          |
+| `importDoc`     | `(path) => Promise<{ default: () => DocMeta }>` | Динамический импорт `.doc.tsx`-файлов                      |
+| `componentsDir` | `string`                                        | Путь до исходников компонентов (для API-секции `.doc.tsx`) |
+| `examplesDir`   | `string`                                        | Путь до примеров (для кода ручных примеров `.doc.tsx`)     |
+| `lang`          | `string`                                        | Язык UI-строк (`"ru"` или `"en"`)                          |
+
+`importContent` обязателен, если в `contentDir` есть `.mdx`-файлы.
+`importDoc` обязателен, если в `contentDir` есть `.doc.tsx`-файлы.
+
+## App Router
+
+Три файла в `app/` подключают роутер:
+
+**`src/app/layout.tsx`** - лэйаут с боковой навигацией:
+
+```tsx
+import { docs } from "@/docs";
+
+export default docs.Layout;
+```
+
+**`src/app/page.tsx`** - корневая страница, редиректит на первый раздел:
+
+```tsx
+import { docs } from "@/docs";
+
+export default docs.IndexPage;
+```
+
+**`src/app/[...slug]/page.tsx`** - страница документа:
+
+```tsx
+import { docs } from "@/docs";
+
+export const dynamicParams = false;
+export const generateStaticParams = docs.generateStaticParams;
+export const generateMetadata = docs.generateMetadata;
+
+export default docs.Page;
+```

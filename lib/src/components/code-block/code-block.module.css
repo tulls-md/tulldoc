@@ -1,0 +1,31 @@
+.Root {
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* shiki рендерит <pre> и <code> - сбрасываем лишние отступы */
+.Root :global(pre) {
+  margin: 0;
+  padding: 16px 20px;
+  overflow-x: auto;
+  background-color: var(--gray-3);
+}
+
+.Toggle {
+  display: block;
+  width: 100%;
+  padding: var(--space-4x);
+  border: 0;
+  background-color: var(--gray-3);
+  color: var(--color-text-secondary, #64748b);
+  font: inherit;
+  font-size: 13px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.Toggle:not(:first-child) {
+  border-top: 1px solid var(--color-gray-200, #e5e7eb);
+}

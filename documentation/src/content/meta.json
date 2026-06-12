@@ -1,0 +1,8 @@
+{
+  "pages": ["overview", "getting-started", "mdx", "doc"],
+  "header": [
+    "for-whom",
+    "vs-storybook",
+    { "label": "GitHub", "href": "https://github.com/tulls-md/tulldoc" }
+  ]
+}

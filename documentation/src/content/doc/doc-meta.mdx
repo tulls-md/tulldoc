@@ -1,0 +1,97 @@
+---
+title: Интерфейс DocMeta
+description: Все поля декларации документа компонента
+---
+
+# Интерфейс DocMeta
+
+`DocMeta<C>` - это объект, который возвращает функция `.doc.tsx`.
+Параметр `C` - тип документируемого компонента; он обеспечивает типизацию `defaultArgs`
+и `examples`.
+
+```ts
+interface DocMeta<C extends ComponentType<any>> {
+  component: C;
+  title?: string;
+  description?: string;
+  componentName?: string;
+  mainExample?: ReactElement;
+  defaultArgs?: Partial<ComponentProps<C>>;
+  examples?: DocExample<ComponentProps<C>>[];
+  anatomy?: ReactNode;
+}
+```
+
+## Поля
+
+### component (обязательное)
+
+Сам компонент. Tulldoc использует его для рендеринга примеров и нахождения
+исходного файла (через `componentsDir`):
+
+```ts
+import { Button } from "@my-org/ui";
+
+return { component: Button };
+```
+
+### title
+
+Заголовок страницы. По умолчанию - имя функции компонента, извлечённое из AST.
+
+```ts
+return { component: Button, title: "Кнопка" };
+```
+
+### description
+
+Текстовое описание под заголовком.
+
+### componentName
+
+Явное имя компонента для отображения в коде примеров и поиска исходного файла.
+
+Нужен в трёх случаях:
+
+1. **Минификация** - имя функции не сохранилось в бандле
+2. **Обёртки** - компонент экспортируется через `forwardRef`, `memo` или HOC
+3. **Составные компоненты** - JSX-имя содержит точку: `Layout.Header`
+
+```ts
+// вместо имени функции forwardRef
+return { component: Button, componentName: "Button" };
+
+// составной компонент: Layout.Header -> ищет функцию LayoutHeader
+return { component: Layout.Header, componentName: "Layout.Header" };
+```
+
+При поиске файла точки игнорируются: `"Layout.Header"` -> ищет функцию `LayoutHeader`.
+
+### defaultArgs
+
+Базовые пропсы, передаваемые компоненту во всех автопримерах. Используйте их
+для обязательных пропсов или наполнения по умолчанию:
+
+```ts
+return {
+  component: Button,
+  defaultArgs: { children: "Кнопка" },
+};
+```
+
+Конкретный автопример может переопределить `defaultArgs` через своё поле `defaultArgs`.
+Значения мерджатся: `{ ...docDefaultArgs, ...exampleDefaultArgs }`.
+
+### examples
+
+Список настроек примеров - автоматических и ручных. Подробнее в разделах
+«Автопримеры» и «Ручные примеры».
+
+### mainExample
+
+Главный пример, показываемый сразу под описанием, перед анатомией.
+Подробнее в разделе «Главный пример».
+
+### anatomy
+
+JSX-схема анатомии компонента. Подробнее в разделе «Анатомия».

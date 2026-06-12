@@ -1,0 +1,53 @@
+.Root {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  width: 200px;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+
+.Title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gray-9);
+  margin: 0 0 var(--space-4x) 0;
+}
+
+.List {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1x);
+  border-left: 1px solid var(--gray-4);
+}
+
+.Link {
+  display: block;
+  padding: var(--space-1x) var(--space-6x);
+  font-size: 13px;
+  color: var(--gray-10);
+  text-decoration: none;
+  line-height: 1.5;
+  transition: color 120ms;
+  margin-left: -1px;
+  border-left: 1px solid transparent;
+}
+
+.Link:hover {
+  color: var(--gray-12);
+}
+
+.LinkNested {
+  padding-left: calc(var(--space-6x) + 12px);
+  font-size: 12px;
+}
+
+.LinkActive {
+  color: var(--green-11);
+  border-left-color: var(--green-9);
+}

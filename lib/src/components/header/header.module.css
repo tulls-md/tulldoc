@@ -1,0 +1,102 @@
+.Root {
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--gray-5);
+  padding: 0 var(--space-8x);
+}
+
+.Nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1x);
+  height: 48px;
+}
+
+.Link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1x);
+  padding: var(--space-2x) var(--space-4x);
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: var(--gray-11);
+  text-decoration: none;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.5;
+  cursor: pointer;
+  transition:
+    background 120ms,
+    color 120ms;
+}
+
+.Link:hover {
+  background: var(--gray-3);
+  color: var(--gray-12);
+}
+
+.LinkActive {
+  background: var(--gray-4);
+  color: var(--gray-12);
+  font-weight: 500;
+}
+
+.Dropdown {
+  position: relative;
+}
+
+.DropdownArrow {
+  font-size: 10px;
+  color: var(--gray-9);
+}
+
+.ExternalIcon {
+  font-size: 10px;
+  color: var(--gray-9);
+}
+
+/* .Link раскладывает содержимое через gap, .DropdownItem - блочный */
+.DropdownItem .ExternalIcon {
+  margin-left: var(--space-1x);
+}
+
+.DropdownMenu {
+  position: absolute;
+  top: calc(100% + var(--space-1x));
+  left: 0;
+  z-index: 10;
+  min-width: 180px;
+  padding: var(--space-1x);
+  border: 1px solid var(--gray-5);
+  border-radius: 8px;
+  background: var(--application-background);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1x);
+}
+
+.DropdownItem {
+  display: block;
+  padding: var(--space-2x) var(--space-4x);
+  border-radius: 6px;
+  color: var(--gray-11);
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: nowrap;
+  transition:
+    background 120ms,
+    color 120ms;
+}
+
+.DropdownItem:hover {
+  background: var(--gray-3);
+  color: var(--gray-12);
+}
+
+.DropdownItemActive {
+  background: var(--gray-4);
+  color: var(--gray-12);
+  font-weight: 500;
+}

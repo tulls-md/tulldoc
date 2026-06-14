@@ -3,6 +3,7 @@ import { Header } from "../header/header";
 import { Sidebar } from "../sidebar/sidebar";
 import { getNavigation, itemHref } from "../../content/nav-items";
 import { getDocStrings } from "../../shared/strings";
+import type { TulldocPlugin } from "../../doc/plugin";
 import { LayoutShell } from "./layout-shell";
 import styles from "./doc-layout.module.css";
 
@@ -10,14 +11,16 @@ interface DocLayoutProps {
   children: ReactNode;
   contentDir: string;
   lang?: string;
+  plugins?: TulldocPlugin[];
 }
 
 export function DocLayout({
   children,
   contentDir,
   lang = "en",
+  plugins,
 }: DocLayoutProps) {
-  const { sidebarItems, headerItems } = getNavigation(contentDir);
+  const { sidebarItems, headerItems } = getNavigation(contentDir, plugins);
   const firstDoc = sidebarItems.find((item) => !item.external);
 
   return (

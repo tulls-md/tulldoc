@@ -3,7 +3,7 @@ title: Пример MDX
 description: Пример документации написанный на Tulldoc
 ---
 
-import { Anatomy } from "@tulls-md/tulldoc";
+import { Anatomy } from "@tulls-md/tulldoc-code";
 import { Button } from "@/components";
 
 # Это пример MDX документации
@@ -106,7 +106,7 @@ import { Button } from "@/components";
 
 Компонент `Anatomy` рисует схему строения компонента — вложенные
 подписанные блоки. Обычно он используется в `*.doc.tsx`, но импортируется
-и в MDX напрямую из `@tulls-md/tulldoc`:
+и в MDX напрямую из аддона `@tulls-md/tulldoc-code`:
 
 <Anatomy.Root>
   <Anatomy.Part label="Button">
@@ -118,7 +118,7 @@ import { Button } from "@/components";
 растягивает часть на свободное место:
 
 ```mdx
-import { Anatomy } from "@tulls-md/tulldoc";
+import { Anatomy } from "@tulls-md/tulldoc-code";
 
 <Anatomy.Root>
   <Anatomy.Part label="Button">

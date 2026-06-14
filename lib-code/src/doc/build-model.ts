@@ -1,9 +1,9 @@
 import type { ReactElement } from "react";
+import { slugify } from "@tulls-md/tulldoc";
+import type { DocStrings, TocHeading } from "@tulls-md/tulldoc";
 import { extractComponentProps } from "../props/extract-props";
 import { resolveComponentSource } from "../sources/source-index";
-import { slugify } from "../shared/slugify";
-import type { DocStrings } from "../shared/strings";
-import type { ExampleView, TocHeading } from "../shared/types";
+import type { ExampleView } from "../shared/types";
 import type { DocMeta } from "./doc-meta";
 import type { DocStaticInfo } from "./static-info";
 

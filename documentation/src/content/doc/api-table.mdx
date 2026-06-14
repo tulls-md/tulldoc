@@ -91,13 +91,18 @@ export interface ButtonProps {
 
 ## Требования к componentsDir
 
-Таблица API работает только при наличии `componentsDir` в `createDocSource`.
-Без него tulldoc не может найти файл компонента для анализа.
+Таблица API работает только при наличии `componentsDir` в плагине `componentDocs`
+(аддон `@tulls-md/tulldoc-code`). Без него tulldoc не может найти файл компонента для анализа.
 
 ```ts
 createDocSource({
-  componentsDir: join(process.cwd(), "../../packages/ui/src/components"),
   // ...
+  plugins: [
+    componentDocs({
+      componentsDir: join(process.cwd(), "../../packages/ui/src/components"),
+      // ...
+    }),
+  ],
 });
 ```
 

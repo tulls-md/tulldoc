@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
-import { CodeBlock } from "../code-block/code-block";
-import { Preview } from "../preview/preview";
+import { CodeBlock, Preview } from "@tulls-md/tulldoc";
 import styles from "./component-preview.module.css";
 
 interface ComponentPreviewProps {

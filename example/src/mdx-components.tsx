@@ -4,7 +4,7 @@ import { getMDXComponents } from "@tulls-md/tulldoc";
 import {
   createComponentExamples,
   createComponentProps,
-} from "@tulls-md/tulldoc/server";
+} from "@tulls-md/tulldoc-code/server";
 
 export function useMDXComponents(): MDXComponents {
   return getMDXComponents({

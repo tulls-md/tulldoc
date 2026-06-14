@@ -17,24 +17,17 @@ import {
 } from "../content/nav-items";
 import { extractHeadings } from "../shared/extract-headings";
 import { getDocStrings } from "../shared/strings";
-import { buildDocModel } from "./build-model";
-import { DocContent } from "./doc-content";
-import type { DocMeta } from "./doc-meta";
-import { extractDocStrings } from "./static-info";
+import type { TulldocPlugin } from "./plugin";
 
 interface DocSourceOptions {
   contentDir: string;
   /** Импорт .mdx-файлов; обязателен, если в contentDir есть .mdx-файлы */
   importContent?: (path: string) => Promise<{ default: ComponentType }>;
-  /** Импорт .doc.tsx-документов; обязателен, если в contentDir есть такие файлы */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- документ описывает компонент с произвольными пропсами
-  importDoc?: (
-    path: string,
-  ) => Promise<{ default: () => DocMeta<ComponentType<any>> }>;
-  /** Корень исходников UI-компонентов - для секций API и автопримеров .doc.tsx */
-  componentsDir?: string;
-  /** Корень примеров - для кода ручных примеров .doc.tsx */
-  examplesDir?: string;
+  /**
+   * Плагины-расширения. Документирование компонентов (.doc.tsx) добавляет
+   * componentDocs() из @tulls-md/tulldoc-code.
+   */
+  plugins?: TulldocPlugin[];
   lang?: string;
 }
 
@@ -45,11 +38,19 @@ interface PageProps {
 export function createDocSource({
   contentDir,
   importContent,
-  importDoc,
-  componentsDir,
-  examplesDir,
+  plugins,
   lang,
 }: DocSourceOptions) {
+  function requireDocPlugin(filePath: string): TulldocPlugin {
+    const plugin = plugins?.[0];
+    if (!plugin) {
+      throw new Error(
+        `tulldoc: найден ${filePath}, но ни один плагин не подключён. Установите @tulls-md/tulldoc-code и добавьте componentDocs({ importDoc, componentsDir }) в plugins createDocSource`,
+      );
+    }
+    return plugin;
+  }
+
   async function generateStaticParams() {
     return collectContentPaths(contentDir);
   }
@@ -61,15 +62,15 @@ export function createDocSource({
     let docTitle: string | undefined;
     let description: string | undefined;
     if (file.kind === "doc") {
-      const info = extractDocStrings(file.filePath);
-      docTitle = info.title ?? info.componentName;
-      description = info.description;
+      const meta = plugins?.[0]?.getMetadata(file.filePath);
+      docTitle = meta?.title;
+      description = meta?.description;
     } else {
       const { data } = matter(readFileSync(file.filePath, "utf-8"));
       docTitle = data.title;
       description = data.description;
     }
-    const { allItems } = getNavigation(contentDir);
+    const { allItems } = getNavigation(contentDir, plugins);
     const { docSlug } = resolveDocTabs(allItems, slug);
     const item = allItems.find((i) => i.slug === docSlug);
     const title =
@@ -85,29 +86,17 @@ export function createDocSource({
     const file = resolveContentFile(contentDir, slugPath);
     if (!file) notFound();
 
-    const { sidebarItems, allItems } = getNavigation(contentDir);
+    const { sidebarItems, allItems } = getNavigation(contentDir, plugins);
     const { tabs, activeTab, docSlug } = resolveDocTabs(allItems, slug);
     const { prev, next } = resolvePagination(sidebarItems, slugPath);
     const strings = getDocStrings(lang);
 
     if (file.kind === "doc") {
-      if (!importDoc) {
-        throw new Error(
-          `tulldoc: найден ${file.filePath}, но importDoc не задан в createDocSource`,
-        );
-      }
-      const { default: docFn } = await importDoc(file.importPath);
-      if (typeof docFn !== "function") {
-        throw new Error(
-          `tulldoc: ${file.filePath} должен иметь default-экспорт функции, возвращающей DocMeta (сейчас default - ${typeof docFn})`,
-        );
-      }
-      const meta = docFn();
-      const staticInfo = extractDocStrings(file.filePath);
-      const model = buildDocModel({ meta, strings, componentsDir, staticInfo });
+      const plugin = requireDocPlugin(file.filePath);
+      const { headings, content } = await plugin.renderDoc({ file, strings });
       return (
         <DocPage
-          headings={model.headings}
+          headings={headings}
           tabs={tabs}
           activeTab={activeTab}
           docSlug={docSlug}
@@ -115,12 +104,7 @@ export function createDocSource({
           next={next}
           tocTitle={strings.onThisPage}
         >
-          <DocContent
-            meta={meta}
-            model={model}
-            strings={strings}
-            examplesDir={examplesDir}
-          />
+          {content}
         </DocPage>
       );
     }
@@ -150,14 +134,14 @@ export function createDocSource({
 
   function Layout({ children }: { children: ReactNode }) {
     return (
-      <DocLayout contentDir={contentDir} lang={lang}>
+      <DocLayout contentDir={contentDir} lang={lang} plugins={plugins}>
         {children}
       </DocLayout>
     );
   }
 
   function IndexPage() {
-    const { sidebarItems } = getNavigation(contentDir);
+    const { sidebarItems } = getNavigation(contentDir, plugins);
     const first = sidebarItems.find((item) => !item.external);
     if (!first) notFound();
     redirect(itemHref(first));

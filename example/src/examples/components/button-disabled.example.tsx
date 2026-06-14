@@ -7,5 +7,5 @@ interface ButtonDisabledExampleProps {
 export default function ButtonDisabledExample(
   props: ButtonDisabledExampleProps,
 ) {
-  return <Button label="Click me!" {...props} />;
+  return <Button label="Click me!" variant="primary" {...props} />;
 }

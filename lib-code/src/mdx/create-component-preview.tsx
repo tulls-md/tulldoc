@@ -3,7 +3,7 @@ import type { ComponentType } from "react";
 import { ComponentPreview } from "../components/component-preview/component-preview";
 import { flattenExampleCode } from "../examples/flatten-code";
 import { extractPreviewHeight } from "../examples/preview-height";
-import { getDocStrings } from "../shared/strings";
+import { getDocStrings } from "@tulls-md/tulldoc";
 
 type ImportFn = (path: string) => Promise<{ default: ComponentType }>;
 

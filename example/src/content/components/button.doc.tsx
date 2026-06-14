@@ -1,4 +1,4 @@
-import { Anatomy, type DocMeta } from "@tulls-md/tulldoc";
+import { Anatomy, type DocMeta } from "@tulls-md/tulldoc-code";
 import { Button } from "@/components";
 import ButtonExample from "@/examples/components/button.example";
 

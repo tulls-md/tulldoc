@@ -5,7 +5,7 @@ import type { ExampleView } from "../shared/types";
 import { extractPropValues } from "../props/prop-values";
 import { extractPreviewHeight } from "../examples/preview-height";
 import { generateVariantsCode } from "../examples/variants-code";
-import { getDocStrings } from "../shared/strings";
+import { getDocStrings } from "@tulls-md/tulldoc";
 
 type ImportFn = (path: string) => Promise<{ default: ComponentType }>;
 

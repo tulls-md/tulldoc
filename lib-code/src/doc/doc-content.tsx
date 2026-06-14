@@ -1,6 +1,6 @@
 import { Fragment, type ComponentType, type ReactElement } from "react";
+import { DocNotice } from "@tulls-md/tulldoc";
 import { ComponentPreview } from "../components/component-preview/component-preview";
-import { DocNotice } from "../components/doc-notice/doc-notice";
 import { ExampleVariants } from "../components/example-variants/example-variants";
 import { PropsTable } from "../components/props-table/props-table";
 import { flattenExampleCode } from "../examples/flatten-code";
@@ -11,7 +11,7 @@ import {
   componentValueName,
   serializeComponentJsx,
 } from "../shared/serialize-jsx";
-import type { DocStrings } from "../shared/strings";
+import type { DocStrings } from "@tulls-md/tulldoc";
 import { resolveExampleSource } from "../sources/source-index";
 import type { DocModel, ResolvedExample } from "./build-model";
 import type { DocMeta } from "./doc-meta";

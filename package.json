@@ -6,6 +6,9 @@
     "pnpm": ">=10"
   },
   "scripts": {
+    "build:lib": "pnpm --filter @tulls-md/tulldoc build",
+    "build:lib-code": "pnpm --filter @tulls-md/tulldoc-code build",
+    "build:libs": "pnpm build:lib && pnpm build:lib-code",
     "tulldoc:docs": "pnpm --filter documentation dev",
     "tulldoc:example": "pnpm --filter example dev",
     "format": "prettier --write .",

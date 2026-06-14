@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "predev": "pnpm --filter @tulls-md/tulldoc build && pnpm --filter @tulls-md/tulldoc-code build",
     "dev": "next dev",
+    "prebuild": "pnpm --filter @tulls-md/tulldoc build && pnpm --filter @tulls-md/tulldoc-code build",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

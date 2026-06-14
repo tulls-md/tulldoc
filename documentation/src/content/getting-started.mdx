@@ -112,12 +112,22 @@ export const docs = createDocSource({
 
 Три файла в `app/` подключают роутер:
 
-**`src/app/layout.tsx`** - лэйаут с боковой навигацией:
+**`src/app/layout.tsx`** - лэйаут с боковой навигацией. Здесь же один раз
+подключаются стили tulldoc (`@tulls-md/tulldoc/styles.css` - reset, тема,
+шрифты):
 
 ```tsx
+import "@tulls-md/tulldoc/styles.css";
 import { docs } from "@/docs";
 
 export default docs.Layout;
+```
+
+Если используете аддон `@tulls-md/tulldoc-code`, добавьте сюда же его стили:
+
+```tsx
+import "@tulls-md/tulldoc/styles.css";
+import "@tulls-md/tulldoc-code/styles.css";
 ```
 
 **`src/app/page.tsx`** - корневая страница, редиректит на первый раздел:

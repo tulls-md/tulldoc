@@ -1,0 +1,41 @@
+.MenuButton {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  margin-left: calc(-1 * var(--space-2x));
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: var(--gray-11);
+  cursor: pointer;
+  transition: background 120ms;
+}
+
+.MenuButton:hover {
+  background: var(--gray-3);
+}
+
+.Icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 18px;
+}
+
+.Icon span {
+  display: block;
+  height: 1.5px;
+  border-radius: 1px;
+  background: currentColor;
+}
+
+@media (max-width: 768px) {
+  .MenuButton {
+    display: inline-flex;
+  }
+}

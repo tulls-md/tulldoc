@@ -34,38 +34,43 @@ export function PropsTable({
   }
   return (
     <>
-      <table className={styles.Root}>
-        <thead>
-          <tr>
-            <th>Prop</th>
-            <th>Type</th>
-            <th>Default</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={row.name}>
-              <td>
-                <code>{row.name}</code>
-                {row.required && (
-                  <span className={styles.Required} aria-label={requiredLabel}>
-                    *
-                  </span>
-                )}
-                {row.description && (
-                  <div className={styles.Description}>{row.description}</div>
-                )}
-              </td>
-              <td>
-                <code>{row.type}</code>
-              </td>
-              <td>
-                {row.defaultValue ? <code>{row.defaultValue}</code> : "-"}
-              </td>
+      <div className={styles.Scroll}>
+        <table className={styles.Root}>
+          <thead>
+            <tr>
+              <th>Prop</th>
+              <th>Type</th>
+              <th>Default</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.name}>
+                <td>
+                  <code>{row.name}</code>
+                  {row.required && (
+                    <span
+                      className={styles.Required}
+                      aria-label={requiredLabel}
+                    >
+                      *
+                    </span>
+                  )}
+                  {row.description && (
+                    <div className={styles.Description}>{row.description}</div>
+                  )}
+                </td>
+                <td>
+                  <code>{row.type}</code>
+                </td>
+                <td>
+                  {row.defaultValue ? <code>{row.defaultValue}</code> : "-"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       {inheritedNote}
     </>
   );

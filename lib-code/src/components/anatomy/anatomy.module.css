@@ -32,3 +32,15 @@
   border-radius: var(--radius-full, 999px);
   white-space: nowrap;
 }
+
+@media (max-width: 768px) {
+  .Root {
+    padding: var(--space-4x);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .Part {
+    padding: var(--space-10x) var(--space-4x) var(--space-4x);
+  }
+}

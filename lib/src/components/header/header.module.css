@@ -1,5 +1,8 @@
 .Root {
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2x);
   border-bottom: 1px solid var(--gray-5);
   padding: 0 var(--space-8x);
 }
@@ -9,6 +12,8 @@
   align-items: center;
   gap: var(--space-1x);
   height: 48px;
+  min-width: 0;
+  flex: 1;
 }
 
 .Link {
@@ -99,4 +104,30 @@
   background: var(--gray-4);
   color: var(--gray-12);
   font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .Root {
+    padding: 0 var(--space-6x);
+  }
+
+  .Nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .Nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .Link,
+  .Dropdown {
+    flex-shrink: 0;
+  }
+
+  .DropdownMenu {
+    max-width: calc(100vw - 2 * var(--space-6x));
+  }
 }

@@ -58,3 +58,12 @@
   color: var(--gray-9);
   padding: var(--space-2x) var(--space-4x) var(--space-2x);
 }
+
+@media (max-width: 768px) {
+  /* В мобильном drawer сайдбар занимает всю ширину панели */
+  .Root {
+    width: 100%;
+    height: 100%;
+    border-right: none;
+  }
+}

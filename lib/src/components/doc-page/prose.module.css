@@ -121,3 +121,20 @@
   font-style: italic;
   color: var(--gray-11);
 }
+
+@media (max-width: 768px) {
+  /* Широкие таблицы прокручиваются по горизонтали внутри себя */
+  .Prose table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .Prose h1 {
+    margin-bottom: var(--space-6x);
+  }
+
+  .Prose h2 {
+    margin-top: var(--space-12x);
+  }
+}

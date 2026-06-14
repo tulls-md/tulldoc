@@ -1,3 +1,8 @@
+.Scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .Root {
   width: 100%;
 }

@@ -1,3 +1,5 @@
 import { withTulldoc } from "@tulls-md/tulldoc/config";
 
-export default withTulldoc();
+export default withTulldoc({
+  output: "export",
+});

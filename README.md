@@ -10,12 +10,14 @@
 
 ## Возможности
 
-- **Роутинг из файловой системы** - `.mdx` и `.doc.tsx` файлы в `contentDir` автоматически становятся страницами
+Ядро `@tulls-md/tulldoc` - MDX-сайт документации:
+
+- **Роутинг из файловой системы** - `.mdx`-файлы в `contentDir` автоматически становятся страницами
 - **Боковая навигация** - строится из структуры папок, порядок управляется через `meta.json`
-- **`.doc.tsx` документы** - описывают компонент декларативно: автопримеры по пропсам, ручные примеры, таблица пропсов
-- **MDX-хелперы** - `createComponentPreview`, `createComponentExamples`, `createComponentProps` для использования в `.mdx`
-- **Готовые UI-блоки** - `CodeBlock`, `Preview`, `PropsTable`, `Anatomy`, `DocTabs`, `DocNotice` и другие
+- **Готовые UI-блоки** - `CodeBlock`, `Preview`, `DocTabs`, `DocNotice` и другие
 - **Подсветка синтаксиса** через Shiki, поддержка GFM и frontmatter
+
+Документирование компонентов из исходного кода - отдельный аддон [`@tulls-md/tulldoc-code`](#аддон-tulls-mdtulldoc-code) (таблицы пропсов из TypeScript-типов, автопримеры по union-типам, `.doc.tsx`-документы). Его ставят дополнительно - тем, кому нужна только MDX-документация, не приходится тянуть зависимости анализа кода (`@babel/parser`, `typescript`-compiler).
 
 Peer-зависимости: `next >= 16`, `react >= 19`, `react-dom >= 19`.
 
@@ -65,11 +67,49 @@ export default docs.Page;
 
 ## Точки входа пакета
 
-| Путь                       | Назначение                                                              |
-| -------------------------- | ----------------------------------------------------------------------- |
-| `@tulls-md/tulldoc`        | React-компоненты и MDX-утилиты (клиент + сервер)                        |
-| `@tulls-md/tulldoc/server` | Серверные хелперы: `createDocSource`, `createComponentPreview` и другие |
-| `@tulls-md/tulldoc/config` | `withTulldoc` - обёртка для `next.config.ts`                            |
+Ядро `@tulls-md/tulldoc`:
+
+| Путь                       | Назначение                                          |
+| -------------------------- | --------------------------------------------------- |
+| `@tulls-md/tulldoc`        | UI-блоки и MDX-утилиты (клиент + сервер)            |
+| `@tulls-md/tulldoc/server` | Серверные хелперы: `createDocSource`, `getNavItems` |
+| `@tulls-md/tulldoc/config` | `withTulldoc` - обёртка для `next.config.ts`        |
+
+## Аддон `@tulls-md/tulldoc-code`
+
+Документирование React-компонентов из исходного кода - устанавливается **отдельно**:
+
+```bash
+pnpm add @tulls-md/tulldoc-code
+```
+
+| Путь                            | Назначение                                                              |
+| ------------------------------- | ----------------------------------------------------------------------- |
+| `@tulls-md/tulldoc-code`        | UI-блоки `PropsTable`, `ComponentPreview`, `ExampleVariants`, `Anatomy` |
+| `@tulls-md/tulldoc-code/server` | `componentDocs` (плагин), `createComponentPreview`/`Examples`/`Props`   |
+
+Подключается в `createDocSource` через плагин:
+
+```ts
+// src/docs.ts
+import { createDocSource } from "@tulls-md/tulldoc/server";
+import { componentDocs } from "@tulls-md/tulldoc-code/server";
+
+export const docs = createDocSource({
+  contentDir: join(process.cwd(), "src/content"),
+  importContent: (path) => import(`./content/${path}.mdx`),
+  plugins: [
+    componentDocs({
+      importDoc: (path) => import(`./content/${path}.doc.tsx`),
+      componentsDir: join(process.cwd(), "../ui/src/components"),
+      examplesDir: join(process.cwd(), "src/examples"),
+    }),
+  ],
+  lang: "ru",
+});
+```
+
+Без аддона `.doc.tsx`-документы недоступны, а `createDocSource` обрабатывает только `.mdx`.
 
 ## Структура репозитория
 
@@ -77,7 +117,8 @@ export default docs.Page;
 
 | Пакет            | Описание                                                       |
 | ---------------- | -------------------------------------------------------------- |
-| `lib/`           | Библиотека `@tulls-md/tulldoc`                                 |
+| `lib/`           | Ядро `@tulls-md/tulldoc` (MDX-сайт)                            |
+| `lib-code/`      | Аддон `@tulls-md/tulldoc-code` (документирование компонентов)  |
 | `documentation/` | Сайт документации tulldoc (сам на нём и построен)              |
 | `example/`       | Пример проекта документации (в планах)                         |
 | `example-lib/`   | Пример компонентной библиотеки для документирования (в планах) |

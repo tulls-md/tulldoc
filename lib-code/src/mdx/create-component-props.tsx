@@ -1,7 +1,7 @@
 import { basename, join } from "path";
 import { PropsTable } from "../components/props-table/props-table";
 import { extractComponentProps } from "../props/extract-props";
-import { getDocStrings } from "../shared/strings";
+import { getDocStrings } from "@tulls-md/tulldoc";
 
 function pascalCase(value: string): string {
   return value

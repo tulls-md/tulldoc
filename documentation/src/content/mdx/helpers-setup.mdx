@@ -5,12 +5,13 @@ description: Как создать и зарегистрировать Component
 
 # Подключение MDX-хелперов
 
-> Этот раздел актуален только для документирования **React-компонентов**.
+> Этот раздел актуален только для документирования **React-компонентов** и требует
+> аддон `@tulls-md/tulldoc-code` (`npm install @tulls-md/tulldoc-code`).
 > Для обычных `.mdx`-статей хелперы не нужны — `getMDXComponents()` без аргументов уже всё подключает.
 
 `ComponentPreview`, `ComponentExamples` и `ComponentProps` — серверные компоненты,
-которые создаются фабричными функциями. Каждая фабрика принимает путь к папке
-и функцию динамического импорта, возвращает готовый React-компонент.
+которые создаются фабричными функциями из `@tulls-md/tulldoc-code/server`. Каждая фабрика
+принимает путь к папке и функцию динамического импорта, возвращает готовый React-компонент.
 
 Создавать их нужно один раз - в `docs.ts` - и передавать в `getMDXComponents`.
 
@@ -19,12 +20,12 @@ description: Как создать и зарегистрировать Component
 ```ts
 // src/docs.ts
 import { join } from "path";
+import { createDocSource } from "@tulls-md/tulldoc/server";
 import {
-  createDocSource,
   createComponentPreview,
   createComponentExamples,
   createComponentProps,
-} from "@tulls-md/tulldoc/server";
+} from "@tulls-md/tulldoc-code/server";
 
 const examplesDir = join(process.cwd(), "src/examples");
 const componentsDir = join(process.cwd(), "../../packages/ui/src/components");

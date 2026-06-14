@@ -11,7 +11,7 @@ import {
   resolveContentFile,
   stripContentExt,
 } from "./content-files";
-import { extractDocStrings } from "../doc/static-info";
+import type { TulldocPlugin } from "../doc/plugin";
 
 /** Внешняя ссылка в pages/header meta.json */
 interface LinkEntry {
@@ -50,10 +50,16 @@ function readDirMeta(dir: string): DirMeta {
   return meta;
 }
 
-function readDocTitle(filePath: string): string | null {
+function readDocTitle(
+  filePath: string,
+  plugins?: TulldocPlugin[],
+): string | null {
   if (filePath.endsWith(DOC_EXT)) {
-    const info = extractDocStrings(filePath);
-    return info.title ?? info.componentName ?? null;
+    for (const plugin of plugins ?? []) {
+      const title = plugin.getMetadata(filePath).title;
+      if (title) return title;
+    }
+    return null;
   }
   const { data } = matter(readFileSync(filePath, "utf-8"));
   return typeof data.title === "string" ? data.title : null;
@@ -125,6 +131,7 @@ function createTabbedItem(
   name: string,
   slugPath: string,
   group: string | null,
+  plugins?: TulldocPlugin[],
 ): NavItem {
   if (readdirSync(dir, { withFileTypes: true }).some((e) => e.isDirectory())) {
     throw new Error(
@@ -141,7 +148,7 @@ function createTabbedItem(
       const file = resolveContentFile(dir, tabSlug)!;
       return {
         slug: tabSlug,
-        label: readDocTitle(file.filePath) ?? prettify(tabSlug),
+        label: readDocTitle(file.filePath, plugins) ?? prettify(tabSlug),
       };
     },
   );
@@ -154,6 +161,7 @@ function scanDir(
   prefixParts: string[],
   group: string | null,
   exclude?: Set<string>,
+  plugins?: TulldocPlugin[],
 ): NavItem[] {
   const meta = readDirMeta(dir);
   const entries = readdirSync(dir, { withFileTypes: true })
@@ -180,15 +188,23 @@ function scanDir(
     if (isDirectory) {
       const subDir = join(dir, diskName);
       if (diskName.startsWith(TAB_DIR_PREFIX)) {
-        results.push(createTabbedItem(subDir, name, slugPath, group));
+        results.push(createTabbedItem(subDir, name, slugPath, group, plugins));
       } else {
         const groupTitle = readDirMeta(subDir).title ?? prettify(name);
-        results.push(...scanDir(subDir, [...prefixParts, name], groupTitle));
+        results.push(
+          ...scanDir(
+            subDir,
+            [...prefixParts, name],
+            groupTitle,
+            undefined,
+            plugins,
+          ),
+        );
       }
     } else {
       // resolveContentFile бросит ошибку при коллизии name.mdx + name.doc.tsx
       const file = resolveContentFile(dir, name)!;
-      const label = readDocTitle(file.filePath) ?? prettify(name);
+      const label = readDocTitle(file.filePath, plugins) ?? prettify(name);
       results.push({ slug: slugPath, group, label });
     }
   }
@@ -204,67 +220,82 @@ export interface Navigation {
   allItems: NavItem[];
 }
 
-export const getNavigation = cache((contentDir: string): Navigation => {
-  const headerEntries = readDirMeta(contentDir).header ?? [];
-  const headerNames = headerEntries.filter(
-    (e): e is string => typeof e === "string",
-  );
-  const sidebarItems = scanDir(contentDir, [], null, new Set(headerNames));
+export const getNavigation = cache(
+  (contentDir: string, plugins?: TulldocPlugin[]): Navigation => {
+    const headerEntries = readDirMeta(contentDir).header ?? [];
+    const headerNames = headerEntries.filter(
+      (e): e is string => typeof e === "string",
+    );
+    const sidebarItems = scanDir(
+      contentDir,
+      [],
+      null,
+      new Set(headerNames),
+      plugins,
+    );
 
-  const headerItems: HeaderItem[] = [];
-  const headerNavItems: NavItem[] = [];
-  for (const entry of headerEntries) {
-    if (typeof entry !== "string") {
-      headerItems.push({
-        slug: entry.href,
-        label: entry.label,
-        href: entry.href,
-        external: true,
-      });
-      continue;
-    }
-    const name = entry;
-    const tabbedDir = join(contentDir, `${TAB_DIR_PREFIX}${name}`);
-    const plainDir = join(contentDir, name);
-    if (existsSync(tabbedDir)) {
-      const item = createTabbedItem(tabbedDir, name, name, null);
-      headerNavItems.push(item);
-      headerItems.push({ slug: name, label: item.label, href: itemHref(item) });
-    } else if (existsSync(plainDir)) {
-      const label = readDirMeta(plainDir).title ?? prettify(name);
-      const children = scanDir(plainDir, [name], label);
-      headerNavItems.push(...children.filter((child) => !child.external));
-      headerItems.push({
-        slug: name,
-        label,
-        items: children.map((child) => ({
-          href: itemHref(child),
-          label: child.label,
-          external: child.external,
-        })),
-      });
-    } else {
-      const file = resolveContentFile(contentDir, name);
-      if (!file) {
-        throw new Error(
-          `tulldoc: в meta.json указан header-пункт "${name}", но файла или папки с таким именем нет`,
-        );
+    const headerItems: HeaderItem[] = [];
+    const headerNavItems: NavItem[] = [];
+    for (const entry of headerEntries) {
+      if (typeof entry !== "string") {
+        headerItems.push({
+          slug: entry.href,
+          label: entry.label,
+          href: entry.href,
+          external: true,
+        });
+        continue;
       }
-      const label = readDocTitle(file.filePath) ?? prettify(name);
-      headerNavItems.push({ slug: name, group: null, label });
-      headerItems.push({ slug: name, label, href: `/${name}` });
+      const name = entry;
+      const tabbedDir = join(contentDir, `${TAB_DIR_PREFIX}${name}`);
+      const plainDir = join(contentDir, name);
+      if (existsSync(tabbedDir)) {
+        const item = createTabbedItem(tabbedDir, name, name, null, plugins);
+        headerNavItems.push(item);
+        headerItems.push({
+          slug: name,
+          label: item.label,
+          href: itemHref(item),
+        });
+      } else if (existsSync(plainDir)) {
+        const label = readDirMeta(plainDir).title ?? prettify(name);
+        const children = scanDir(plainDir, [name], label, undefined, plugins);
+        headerNavItems.push(...children.filter((child) => !child.external));
+        headerItems.push({
+          slug: name,
+          label,
+          items: children.map((child) => ({
+            href: itemHref(child),
+            label: child.label,
+            external: child.external,
+          })),
+        });
+      } else {
+        const file = resolveContentFile(contentDir, name);
+        if (!file) {
+          throw new Error(
+            `tulldoc: в meta.json указан header-пункт "${name}", но файла или папки с таким именем нет`,
+          );
+        }
+        const label = readDocTitle(file.filePath, plugins) ?? prettify(name);
+        headerNavItems.push({ slug: name, group: null, label });
+        headerItems.push({ slug: name, label, href: `/${name}` });
+      }
     }
-  }
 
-  return {
-    sidebarItems,
-    headerItems,
-    allItems: [...sidebarItems, ...headerNavItems],
-  };
-});
+    return {
+      sidebarItems,
+      headerItems,
+      allItems: [...sidebarItems, ...headerNavItems],
+    };
+  },
+);
 
-export function getNavItems(contentDir: string): NavItem[] {
-  return getNavigation(contentDir).sidebarItems;
+export function getNavItems(
+  contentDir: string,
+  plugins?: TulldocPlugin[],
+): NavItem[] {
+  return getNavigation(contentDir, plugins).sidebarItems;
 }
 
 export function itemHref(item: NavItem): string {

@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import clsx from "clsx";
-import { CodeBlock } from "../code-block/code-block";
-import { Preview } from "../preview/preview";
+import { CodeBlock, Preview } from "@tulls-md/tulldoc";
 import type { ExampleView } from "../../shared/types";
 import styles from "./example-variants.module.css";
 

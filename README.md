@@ -1,27 +1,51 @@
+<div align="center">
+
+<img src="assets/logo.jpeg" alt="Tulldoc" width="280" />
+
 # Tulldoc
 
-> Библиотека в разработке и еще не готова к публикации и использованию
+**Documentation sites for component libraries — built straight from your source code.**
 
-<img src="assets/logo.jpeg" alt="Tulldoc" width="300" />
+[![status](https://img.shields.io/badge/status-work%20in%20progress-orange)](#status)
+[![next](https://img.shields.io/badge/Next.js-%E2%89%A516-black)](https://nextjs.org)
+[![react](https://img.shields.io/badge/React-%E2%89%A519-149eca)](https://react.dev)
 
-`@tulls-md/tulldoc` - библиотека для быстрого создания сайтов документации компонентных библиотек на базе Next.js.
+[**📖 Documentation**](https://tulldoc.tulls.ru/) · [Getting started](#getting-started) · [Addon](#addon-tulls-mdtulldoc-code)
 
-Документация и примеры строятся прямо из исходного кода компонентов: таблицы пропсов извлекаются из TypeScript-типов, примеры вариантов генерируются автоматически по union-типам - документация не расходится с кодом.
+</div>
 
-## Возможности
+> [!WARNING]
+> **Status:** Tulldoc is under active development and is **not yet ready** for publishing or production use. APIs may change without notice.
 
-Ядро `@tulls-md/tulldoc` - MDX-сайт документации:
+---
 
-- **Роутинг из файловой системы** - `.mdx`-файлы в `contentDir` автоматически становятся страницами
-- **Боковая навигация** - строится из структуры папок, порядок управляется через `meta.json`
-- **Готовые UI-блоки** - `CodeBlock`, `Preview`, `DocTabs`, `DocNotice` и другие
-- **Подсветка синтаксиса** через Shiki, поддержка GFM и frontmatter
+`@tulls-md/tulldoc` is a library for quickly building documentation sites for component libraries, powered by Next.js.
 
-Документирование компонентов из исходного кода - отдельный аддон [`@tulls-md/tulldoc-code`](#аддон-tulls-mdtulldoc-code) (таблицы пропсов из TypeScript-типов, автопримеры по union-типам, `.doc.tsx`-документы). Его ставят дополнительно - тем, кому нужна только MDX-документация, не приходится тянуть зависимости анализа кода (`@babel/parser`, `typescript`-compiler).
+Docs and examples are generated **directly from your component source**: props tables are extracted from TypeScript types, and variant examples are produced automatically from union types — so the documentation never drifts out of sync with the code.
 
-Peer-зависимости: `next >= 16`, `react >= 19`, `react-dom >= 19`.
+## Why Tulldoc
 
-Оберните конфиг Next.js:
+- 📁 **File-system routing** — every `.mdx` file in your `contentDir` automatically becomes a page.
+- 🧭 **Generated sidebar** — built from your folder structure, with ordering controlled via `meta.json`.
+- 🧱 **Batteries-included UI** — ready-made blocks like `CodeBlock`, `Preview`, `DocTabs`, `DocNotice`, and more.
+- 🎨 **First-class syntax highlighting** — powered by [Shiki](https://shiki.style), with GFM and frontmatter support.
+- 🔌 **Source-driven docs (opt-in)** — props tables from TypeScript types and auto-generated variant examples via the [`@tulls-md/tulldoc-code`](#addon-tulls-mdtulldoc-code) addon.
+
+The core ships only what an MDX documentation site needs. Code-analysis dependencies (`@babel/parser`, the `typescript` compiler) live in a separate addon — if you only need MDX docs, you never pull them in.
+
+## Requirements
+
+| Dependency | Version    |
+|------------|------------|
+| `next`     | `>= 16`    |
+| `react`    | `>= 19`    |
+| `react-dom`| `>= 19`    |
+
+These are **peer dependencies** — Tulldoc relies on the versions installed in your project.
+
+## Getting started
+
+### 1. Wrap your Next.js config
 
 ```ts
 // next.config.ts
@@ -30,7 +54,7 @@ import { withTulldoc } from "@tulls-md/tulldoc/config";
 export default withTulldoc();
 ```
 
-Создайте источник документации:
+### 2. Create a documentation source
 
 ```ts
 // src/docs.ts
@@ -40,15 +64,16 @@ import { createDocSource } from "@tulls-md/tulldoc/server";
 export const docs = createDocSource({
   contentDir: join(process.cwd(), "src/content"),
   importContent: (path) => import(`./content/${path}.mdx`),
-  lang: "ru",
+  lang: "en",
 });
 ```
 
-И подключите роутер в App Router:
+### 3. Wire up the App Router
 
 ```tsx
 // src/app/layout.tsx
 import { docs } from "@/docs";
+
 export default docs.Layout;
 ```
 
@@ -63,32 +88,32 @@ export const generateMetadata = docs.generateMetadata;
 export default docs.Page;
 ```
 
-Полная инструкция - в разделе «Начало работы» документации.
+That's it — drop `.mdx` files into `src/content` and they become pages. See the [**Getting Started**](https://tulldoc.tulls.ru/) section of the docs for the full walkthrough.
 
-## Точки входа пакета
+## Package entry points
 
-Ядро `@tulls-md/tulldoc`:
+The core package, `@tulls-md/tulldoc`, exposes three entry points:
 
-| Путь                       | Назначение                                          |
-|----------------------------|-----------------------------------------------------|
-| `@tulls-md/tulldoc`        | UI-блоки и MDX-утилиты (клиент + сервер)            |
-| `@tulls-md/tulldoc/server` | Серверные хелперы: `createDocSource`, `getNavItems` |
-| `@tulls-md/tulldoc/config` | `withTulldoc` - обёртка для `next.config.ts`        |
+| Entry point                | Purpose                                                  |
+|----------------------------|----------------------------------------------------------|
+| `@tulls-md/tulldoc`        | UI blocks and MDX utilities (client + server)            |
+| `@tulls-md/tulldoc/server` | Server helpers: `createDocSource`, `getNavItems`         |
+| `@tulls-md/tulldoc/config` | `withTulldoc` — the wrapper for `next.config.ts`         |
 
-## Аддон `@tulls-md/tulldoc-code`
+## Addon: `@tulls-md/tulldoc-code`
 
-Документирование React-компонентов из исходного кода - устанавливается **отдельно**:
+Documenting React components from their source code is handled by a **separate** package, installed on demand:
 
 ```bash
 pnpm add @tulls-md/tulldoc-code
 ```
 
-| Путь                            | Назначение                                                              |
-|---------------------------------|-------------------------------------------------------------------------|
-| `@tulls-md/tulldoc-code`        | UI-блоки `PropsTable`, `ComponentPreview`, `ExampleVariants`, `Anatomy` |
-| `@tulls-md/tulldoc-code/server` | `componentDocs` (плагин), `createComponentPreview`/`Examples`/`Props`   |
+| Entry point                     | Purpose                                                                  |
+|---------------------------------|--------------------------------------------------------------------------|
+| `@tulls-md/tulldoc-code`        | UI blocks: `PropsTable`, `ComponentPreview`, `ExampleVariants`, `Anatomy`|
+| `@tulls-md/tulldoc-code/server` | `componentDocs` plugin, `createComponentPreview` / `Examples` / `Props`  |
 
-Подключается в `createDocSource` через плагин:
+Hook it into `createDocSource` as a plugin:
 
 ```ts
 // src/docs.ts
@@ -105,37 +130,41 @@ export const docs = createDocSource({
       examplesDir: join(process.cwd(), "src/examples"),
     }),
   ],
-  lang: "ru",
+  lang: "en",
 });
 ```
 
-Без аддона `.doc.tsx`-документы недоступны, а `createDocSource` обрабатывает только `.mdx`.
+Without the addon, `.doc.tsx` documents are unavailable and `createDocSource` processes only `.mdx` files.
 
-## Структура репозитория
+## Repository structure
 
-Это pnpm-монорепозиторий:
+Tulldoc is a pnpm monorepo:
 
-| Пакет            | Описание                                                      |
+| Package          | Description                                                   |
 |------------------|---------------------------------------------------------------|
-| `lib/`           | Ядро `@tulls-md/tulldoc` (MDX-сайт)                           |
-| `lib-code/`      | Аддон `@tulls-md/tulldoc-code` (документирование компонентов) |
-| `documentation/` | Сайт документации tulldoc (сам на нём и построен)             |
-| `example/`       | Пример проекта документации                                   |
+| `lib/`           | Core `@tulls-md/tulldoc` (the MDX site)                       |
+| `lib-code/`      | Addon `@tulls-md/tulldoc-code` (component documentation)      |
+| `documentation/` | The tulldoc documentation site (built with tulldoc itself)   |
+| `example/`       | An example documentation project                             |
 
-## Разработка
+## Development
 
-Требования: Node.js >= 24, pnpm >= 10.
+**Requirements:** Node.js `>= 24`, pnpm `>= 10`.
 
 ```bash
 pnpm install
 
-# запустить сайт документации (dev-режим)
+# run the documentation site (dev mode)
 pnpm tulldoc:docs
 
-# запустить сайт примера (dev-режим)
+# run the example site (dev mode)
 pnpm tulldoc:examle
 
-# форматирование
+# formatting
 pnpm format
 pnpm format:check
 ```
+
+## Status
+
+Tulldoc is **work in progress**. The current goal is a first publish to npm; expect breaking changes until then.

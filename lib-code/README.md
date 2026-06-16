@@ -1,26 +1,38 @@
 # @tulls-md/tulldoc-code
 
-Аддон к [`@tulls-md/tulldoc`](https://github.com/tulls-md/tulldoc/tree/main/lib) для документирования React-компонентов прямо из исходного кода: таблицы пропсов извлекаются из TypeScript-типов, примеры вариантов генерируются автоматически по union-типам - документация не расходится с кодом.
+> An addon for [`@tulls-md/tulldoc`](https://github.com/tulls-md/tulldoc/tree/main/lib) that documents React components straight from their source: props tables are extracted from TypeScript types, and variant examples are generated automatically from union types — so the documentation never drifts out of sync with the code.
 
-Вынесен в отдельный пакет, чтобы проектам, которым нужна только MDX-документация, не тянуть зависимости анализа кода (`@babel/parser`, `typescript`-compiler).
+[**📖 Documentation**](https://tulldoc.tulls.ru/) · [Installation](#installation) · [Setup](#setup)
 
-## Возможности
+It ships as a separate package so that projects needing only MDX documentation don't pull in code-analysis dependencies (`@babel/parser`, the `typescript` compiler).
 
-- **`.doc.tsx`-документы** - описывают компонент декларативно: автопримеры по пропсам, ручные примеры, таблица пропсов
-- **MDX-хелперы** - `createComponentPreview`, `createComponentExamples`, `createComponentProps` для использования в `.mdx`
-- **UI-блоки** - `PropsTable`, `ComponentPreview`, `ExampleVariants`, `Anatomy`
+## Features
 
-## Установка
+- 📄 **`.doc.tsx` documents** — describe a component declaratively: prop-driven auto examples, manual examples, and a props table.
+- 🧩 **MDX helpers** — `createComponentPreview`, `createComponentExamples`, `createComponentProps` for use inside `.mdx`.
+- 🧱 **UI blocks** — `PropsTable`, `ComponentPreview`, `ExampleVariants`, `Anatomy`.
+
+## Installation
 
 ```bash
+# npm
 npm install @tulls-md/tulldoc @tulls-md/tulldoc-code
+
+# pnpm
+pnpm add @tulls-md/tulldoc @tulls-md/tulldoc-code
+
+# yarn
+yarn add @tulls-md/tulldoc @tulls-md/tulldoc-code
+
+# bun
+bun add @tulls-md/tulldoc @tulls-md/tulldoc-code
 ```
 
-Аддон требует ядро `@tulls-md/tulldoc`. Peer-зависимости: `next >= 16`, `react >= 19`, `react-dom >= 19`.
+The addon requires the `@tulls-md/tulldoc` core. **Peer dependencies:** `next >= 16`, `react >= 19`, `react-dom >= 19`.
 
-## Подключение
+## Setup
 
-Добавьте плагин `componentDocs` в `createDocSource`:
+Register the `componentDocs` plugin in `createDocSource`:
 
 ```ts
 // src/docs.ts
@@ -33,27 +45,29 @@ export const docs = createDocSource({
   importContent: (path) => import(`./content/${path}.mdx`),
   plugins: [
     componentDocs({
-      // импорт .doc.tsx-документов из contentDir
+      // import .doc.tsx documents from contentDir
       importDoc: (path) => import(`./content/${path}.doc.tsx`),
-      // корень исходников UI-компонентов - для API-таблиц и автопримеров
+      // root of the UI component sources — for API tables and auto examples
       componentsDir: join(process.cwd(), "../ui/src/components"),
-      // корень примеров - для кода ручных примеров (необязательно)
+      // root of the examples — for manual example code (optional)
       examplesDir: join(process.cwd(), "src/examples"),
     }),
   ],
-  lang: "ru",
+  lang: "en",
 });
 ```
 
-После этого `.doc.tsx`-файлы в `contentDir` становятся страницами документации компонента, а в `.mdx` доступны хелперы `createComponentPreview`/`createComponentExamples`/`createComponentProps` из `@tulls-md/tulldoc-code/server`.
+After this, `.doc.tsx` files in `contentDir` become component documentation pages, and the `createComponentPreview` / `createComponentExamples` / `createComponentProps` helpers from `@tulls-md/tulldoc-code/server` become available inside `.mdx`.
 
-## Точки входа пакета
+## Package entry points
 
-| Путь                            | Назначение                                                              |
-| ------------------------------- | ----------------------------------------------------------------------- |
-| `@tulls-md/tulldoc-code`        | UI-блоки `PropsTable`, `ComponentPreview`, `ExampleVariants`, `Anatomy` |
-| `@tulls-md/tulldoc-code/server` | `componentDocs` (плагин), `createComponentPreview`/`Examples`/`Props`   |
+| Entry point                     | Purpose                                                                   |
+| ------------------------------- | ------------------------------------------------------------------------- |
+| `@tulls-md/tulldoc-code`        | UI blocks: `PropsTable`, `ComponentPreview`, `ExampleVariants`, `Anatomy` |
+| `@tulls-md/tulldoc-code/server` | `componentDocs` plugin, `createComponentPreview` / `Examples` / `Props`   |
 
-## Лицензия
+Full documentation: **[tulldoc.tulls.ru](https://tulldoc.tulls.ru/)** · Source code: [tulls-md/tulldoc](https://github.com/tulls-md/tulldoc).
+
+## License
 
 MIT

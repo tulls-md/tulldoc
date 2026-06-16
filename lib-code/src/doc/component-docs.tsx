@@ -37,9 +37,11 @@ export function componentDocs({
     async renderDoc({
       file,
       strings,
+      sourceUrl,
     }: {
       file: ContentFile;
       strings: DocStrings;
+      sourceUrl?: (filePath: string) => string | undefined;
     }) {
       const { default: docFn } = await importDoc(file.importPath);
       if (typeof docFn !== "function") {
@@ -52,6 +54,7 @@ export function componentDocs({
       const model = buildDocModel({ meta, strings, componentsDir, staticInfo });
       return {
         headings: model.headings,
+        sourceHref: sourceUrl?.(model.source.filePath),
         content: (
           <DocContent
             meta={meta}

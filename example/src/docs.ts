@@ -5,6 +5,7 @@ import { componentDocs } from "@tulls-md/tulldoc-code/server";
 export const docs = createDocSource({
   contentDir: join(process.cwd(), "src/content"),
   importContent: (path) => import(`./content/${path}.mdx`),
+  repo: { url: "https://github.com/tulls-md/tulldoc", branch: "main" },
   plugins: [
     componentDocs({
       importDoc: (path) => import(`./content/${path}.doc.tsx`),

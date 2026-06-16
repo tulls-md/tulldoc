@@ -11,21 +11,22 @@
   min-width: 0;
 }
 
+.SourceLinks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6x);
+}
+
 .SourceLink {
   display: inline-flex;
   align-items: center;
   gap: var(--space-1x);
-  margin-bottom: var(--space-2x);
   color: var(--gray-10);
   text-decoration: none;
   font-size: 13px;
   line-height: 1.5;
   transition: color 120ms;
-}
-
-.SourceLink::before {
-  content: "↗";
-  font-size: 11px;
 }
 
 .SourceLink:hover {

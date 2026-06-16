@@ -18,6 +18,7 @@ import {
 import { extractHeadings } from "../shared/extract-headings";
 import { getDocStrings } from "../shared/strings";
 import { buildSourceUrl, findGitRoot, type RepoConfig } from "../shared/repo";
+import type { SourceLink } from "../shared/types";
 import type { TulldocPlugin } from "./plugin";
 
 interface DocSourceOptions {
@@ -94,9 +95,26 @@ export function createDocSource({
     const { prev, next } = resolvePagination(sidebarItems, slugPath);
     const strings = getDocStrings(lang);
 
+    const editHref = sourceHref(file.filePath);
+    const editLink: SourceLink[] = editHref
+      ? [{ href: editHref, label: strings.editPage, kind: "edit" }]
+      : [];
+
     if (file.kind === "doc") {
       const plugin = requireDocPlugin(file.filePath);
-      const { headings, content } = await plugin.renderDoc({ file, strings });
+      const {
+        headings,
+        content,
+        sourceHref: componentHref,
+      } = await plugin.renderDoc({ file, strings, sourceUrl: sourceHref });
+      const sourceLinks: SourceLink[] = [...editLink];
+      if (componentHref) {
+        sourceLinks.push({
+          href: componentHref,
+          label: strings.componentSource,
+          kind: "component",
+        });
+      }
       return (
         <DocPage
           headings={headings}
@@ -106,8 +124,7 @@ export function createDocSource({
           prev={prev}
           next={next}
           tocTitle={strings.onThisPage}
-          sourceHref={sourceHref(file.filePath)}
-          sourceLabel={strings.source}
+          sourceLinks={sourceLinks}
         >
           {content}
         </DocPage>
@@ -131,8 +148,7 @@ export function createDocSource({
         prev={prev}
         next={next}
         tocTitle={strings.onThisPage}
-        sourceHref={sourceHref(file.filePath)}
-        sourceLabel={strings.source}
+        sourceLinks={editLink}
       >
         <Content />
       </DocPage>

@@ -10,6 +10,7 @@
   height: 100%;
   padding: var(--space-8x);
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .Row {
@@ -40,4 +41,20 @@
 
 .Label {
   color: var(--color-text-secondary, #64748b);
+}
+
+@media (max-width: 768px) {
+  .Items {
+    gap: var(--space-4x);
+    padding: var(--space-4x);
+  }
+
+  .Item {
+    max-width: 100%;
+    padding: var(--space-4x);
+  }
+
+  .Cell {
+    padding: var(--space-4x);
+  }
 }

@@ -5,6 +5,7 @@ import { getNavigation, itemHref } from "../../content/nav-items";
 import { getDocStrings } from "../../shared/strings";
 import type { TulldocPlugin } from "../../doc/plugin";
 import { LayoutShell } from "./layout-shell";
+import { MobileNavProvider } from "../mobile-nav/mobile-nav";
 import styles from "./doc-layout.module.css";
 
 interface DocLayoutProps {
@@ -22,31 +23,36 @@ export function DocLayout({
 }: DocLayoutProps) {
   const { sidebarItems, headerItems } = getNavigation(contentDir, plugins);
   const firstDoc = sidebarItems.find((item) => !item.external);
+  // Шапку показываем, если есть её пункты или сайдбар - на мобиле в ней живёт бургер
+  const showHeader = headerItems.length > 0 || sidebarItems.length > 0;
 
   return (
     <html lang={lang}>
       <body className={styles.Body}>
-        {headerItems.length > 0 && (
-          <Header
-            items={headerItems}
-            docsLink={
-              firstDoc
-                ? {
-                    href: itemHref(firstDoc),
-                    label: getDocStrings(lang).documentation,
-                  }
-                : undefined
-            }
-          />
-        )}
-        <LayoutShell
-          headerSlugs={headerItems
-            .filter((item) => !item.external)
-            .map((item) => item.slug)}
-          sidebar={<Sidebar items={sidebarItems} />}
-        >
-          {children}
-        </LayoutShell>
+        <MobileNavProvider>
+          {showHeader && (
+            <Header
+              items={headerItems}
+              hasSidebar={sidebarItems.length > 0}
+              docsLink={
+                firstDoc
+                  ? {
+                      href: itemHref(firstDoc),
+                      label: getDocStrings(lang).documentation,
+                    }
+                  : undefined
+              }
+            />
+          )}
+          <LayoutShell
+            headerSlugs={headerItems
+              .filter((item) => !item.external)
+              .map((item) => item.slug)}
+            sidebar={<Sidebar items={sidebarItems} />}
+          >
+            {children}
+          </LayoutShell>
+        </MobileNavProvider>
       </body>
     </html>
   );

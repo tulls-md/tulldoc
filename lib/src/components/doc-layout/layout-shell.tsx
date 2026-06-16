@@ -2,6 +2,8 @@
 
 import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
+import clsx from "clsx";
+import { useMobileNav } from "../mobile-nav/mobile-nav";
 import styles from "./doc-layout.module.css";
 
 interface LayoutShellProps {
@@ -18,13 +20,26 @@ export function LayoutShell({
   headerSlugs,
 }: LayoutShellProps) {
   const pathname = usePathname();
+  const { open, close } = useMobileNav();
   const isHeaderPage = headerSlugs.some(
     (slug) => pathname === `/${slug}` || pathname.startsWith(`/${slug}/`),
   );
 
   return (
     <div className={styles.Content}>
-      {!isHeaderPage && sidebar}
+      {!isHeaderPage && (
+        <>
+          <div
+            id="tulldoc-sidebar"
+            className={clsx(styles.SidebarSlot, open && styles.SidebarSlotOpen)}
+          >
+            {sidebar}
+          </div>
+          {open && (
+            <div className={styles.Backdrop} onClick={close} aria-hidden />
+          )}
+        </>
+      )}
       <main className={styles.Main}>{children}</main>
     </div>
   );

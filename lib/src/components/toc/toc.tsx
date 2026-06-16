@@ -15,6 +15,7 @@ export function TableOfContents({
   title = "On this page",
 }: TocProps) {
   const [activeId, setActiveId] = useState<string>("");
+  const [mobileOpen, setMobileOpen] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
@@ -47,8 +48,18 @@ export function TableOfContents({
 
   return (
     <aside className={styles.Root}>
-      <p className={styles.Title}>{title}</p>
-      <ul className={styles.List}>
+      <button
+        type="button"
+        className={styles.Toggle}
+        aria-expanded={mobileOpen}
+        onClick={() => setMobileOpen((value) => !value)}
+      >
+        <span className={styles.Title}>{title}</span>
+        <span className={styles.Chevron} aria-hidden>
+          ▾
+        </span>
+      </button>
+      <ul className={clsx(styles.List, !mobileOpen && styles.Collapsed)}>
         {headings.map(({ id, text, level }) => (
           <li key={id}>
             <a
@@ -58,6 +69,7 @@ export function TableOfContents({
                 level === 3 && styles.LinkNested,
                 activeId === id && styles.LinkActive,
               )}
+              onClick={() => setMobileOpen(false)}
             >
               {text}
             </a>

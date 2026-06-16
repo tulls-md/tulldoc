@@ -1,25 +1,30 @@
 import type { HeaderItem } from "../../shared/types";
 import { HeaderLink } from "./header-link";
 import { HeaderDropdown } from "./header-dropdown";
+import { MenuButton } from "../mobile-nav/mobile-nav";
 import styles from "./header.module.css";
 
 interface HeaderProps {
   items: HeaderItem[];
   /** Ссылка на первую страницу сайдбара - показывается первым пунктом */
   docsLink?: { href: string; label: string };
+  /** Есть ли страницы сайдбара - от этого зависит показ бургера на мобиле */
+  hasSidebar?: boolean;
 }
 
-export function Header({ items, docsLink }: HeaderProps) {
+export function Header({ items, docsLink, hasSidebar }: HeaderProps) {
+  const headerSlugs = items
+    .filter((item) => !item.external)
+    .map((item) => item.slug);
   return (
     <header className={styles.Root}>
+      {hasSidebar && <MenuButton headerSlugs={headerSlugs} />}
       <nav className={styles.Nav}>
         {docsLink && (
           <HeaderLink
             href={docsLink.href}
             label={docsLink.label}
-            excludePaths={items
-              .filter((item) => !item.external)
-              .map((item) => `/${item.slug}`)}
+            excludePaths={headerSlugs.map((slug) => `/${slug}`)}
           />
         )}
         {items.map((item) =>

@@ -1,7 +1,7 @@
 {
   "name": "@tulls-md/tulldoc",
   "private": false,
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Библиотека для быстрого создания сайтов документации компонентных библиотек на базе Next.js",
   "license": "MIT",
   "repository": {

@@ -17,18 +17,15 @@ import {
 } from "../content/nav-items";
 import { extractHeadings } from "../shared/extract-headings";
 import { getDocStrings } from "../shared/strings";
+import { buildSourceUrl, findGitRoot, type RepoConfig } from "../shared/repo";
 import type { TulldocPlugin } from "./plugin";
 
 interface DocSourceOptions {
   contentDir: string;
-  /** Импорт .mdx-файлов; обязателен, если в contentDir есть .mdx-файлы */
   importContent?: (path: string) => Promise<{ default: ComponentType }>;
-  /**
-   * Плагины-расширения. Документирование компонентов (.doc.tsx) добавляет
-   * componentDocs() из @tulls-md/tulldoc-code.
-   */
   plugins?: TulldocPlugin[];
   lang?: string;
+  repo?: RepoConfig;
 }
 
 interface PageProps {
@@ -40,7 +37,13 @@ export function createDocSource({
   importContent,
   plugins,
   lang,
+  repo,
 }: DocSourceOptions) {
+  function sourceHref(filePath: string): string | undefined {
+    if (!repo) return undefined;
+    return buildSourceUrl(repo, filePath, findGitRoot(contentDir));
+  }
+
   function requireDocPlugin(filePath: string): TulldocPlugin {
     const plugin = plugins?.[0];
     if (!plugin) {
@@ -103,6 +106,8 @@ export function createDocSource({
           prev={prev}
           next={next}
           tocTitle={strings.onThisPage}
+          sourceHref={sourceHref(file.filePath)}
+          sourceLabel={strings.source}
         >
           {content}
         </DocPage>
@@ -126,6 +131,8 @@ export function createDocSource({
         prev={prev}
         next={next}
         tocTitle={strings.onThisPage}
+        sourceHref={sourceHref(file.filePath)}
+        sourceLabel={strings.source}
       >
         <Content />
       </DocPage>
@@ -134,7 +141,12 @@ export function createDocSource({
 
   function Layout({ children }: { children: ReactNode }) {
     return (
-      <DocLayout contentDir={contentDir} lang={lang} plugins={plugins}>
+      <DocLayout
+        contentDir={contentDir}
+        lang={lang}
+        plugins={plugins}
+        repo={repo}
+      >
         {children}
       </DocLayout>
     );

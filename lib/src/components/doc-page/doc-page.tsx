@@ -16,6 +16,8 @@ interface DocPageProps {
   prev?: PaginationLink;
   next?: PaginationLink;
   tocTitle?: string;
+  sourceHref?: string;
+  sourceLabel?: string;
 }
 
 export function DocPage({
@@ -27,12 +29,24 @@ export function DocPage({
   prev,
   next,
   tocTitle,
+  sourceHref,
+  sourceLabel,
 }: DocPageProps) {
   return (
     <div className={styles.Root}>
       <article className={clsx(proseStyles.Prose, styles.Content)}>
         {tabs && activeTab && docSlug && (
           <DocTabs tabs={tabs} activeTab={activeTab} docSlug={docSlug} />
+        )}
+        {sourceHref && (
+          <a
+            href={sourceHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.SourceLink}
+          >
+            {sourceLabel ?? "Source"}
+          </a>
         )}
         {children}
         <DocPagination prev={prev} next={next} />

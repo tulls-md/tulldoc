@@ -1,6 +1,8 @@
 import type { HeaderItem } from "../../shared/types";
+import type { RepoProvider } from "../../shared/repo";
 import { HeaderLink } from "./header-link";
 import { HeaderDropdown } from "./header-dropdown";
+import { RepoIcon } from "./repo-icon";
 import { MenuButton } from "../mobile-nav/mobile-nav";
 import styles from "./header.module.css";
 
@@ -10,9 +12,11 @@ interface HeaderProps {
   docsLink?: { href: string; label: string };
   /** Есть ли страницы сайдбара - от этого зависит показ бургера на мобиле */
   hasSidebar?: boolean;
+  /** Ссылка-иконка на репозиторий в правом углу */
+  repo?: { href: string; provider: RepoProvider };
 }
 
-export function Header({ items, docsLink, hasSidebar }: HeaderProps) {
+export function Header({ items, docsLink, hasSidebar, repo }: HeaderProps) {
   const headerSlugs = items
     .filter((item) => !item.external)
     .map((item) => item.slug);
@@ -58,6 +62,17 @@ export function Header({ items, docsLink, hasSidebar }: HeaderProps) {
           ),
         )}
       </nav>
+      {repo && (
+        <a
+          href={repo.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.RepoLink}
+          aria-label={repo.provider === "gitlab" ? "GitLab" : "GitHub"}
+        >
+          <RepoIcon provider={repo.provider} />
+        </a>
+      )}
     </header>
   );
 }

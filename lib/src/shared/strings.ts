@@ -10,6 +10,7 @@ export interface DocStrings {
   hideCode: string;
   required: string;
   inheritedFrom: string;
+  source: string;
 }
 
 const ru: DocStrings = {
@@ -25,6 +26,7 @@ const ru: DocStrings = {
   hideCode: "Скрыть код",
   required: "обязательный",
   inheritedFrom: "Наследуется от",
+  source: "Исходник",
 };
 
 const en: DocStrings = {
@@ -40,6 +42,7 @@ const en: DocStrings = {
   hideCode: "Hide code",
   required: "required",
   inheritedFrom: "Inherited from",
+  source: "Source",
 };
 
 export function getDocStrings(lang?: string): DocStrings {

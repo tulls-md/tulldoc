@@ -1,18 +1,18 @@
 # Changelog
 
-Все значимые изменения пакета `@tulls-md/tulldoc` документируются в этом файле.
+All notable changes to the `@tulls-md/tulldoc` package are documented in this file.
 
 ## [0.2.0] - 2026-06-14
 
-### Добавлено
+### Added
 
-- Мобильная навигация
-- Сворачиваемое оглавление (TOC) на мобильных: заголовок становится кнопкой,
-  список разделов раскрывается по тапу и закрывается после выбора пункта.
+- Mobile navigation
+- Collapsible table of contents (TOC) on mobile: the heading becomes a button,
+  the list of sections expands on tap and closes after a section is selected.
 
-### Изменено
+### Changed
 
-- Адаптивная вёрстка контентных блоков под узкие экраны: таблицы свойств,
-  блоки примеров и анатомия.
+- Responsive layout for content blocks on narrow screens: props tables,
+  example blocks, and anatomy.
 
 [0.2.0]: https://github.com/tulls-md/tulldoc/releases/tag/v0.2.0

@@ -43,6 +43,22 @@ The core ships only what an MDX documentation site needs. Code-analysis dependen
 
 These are **peer dependencies** — Tulldoc relies on the versions installed in your project.
 
+## Installation
+
+```bash
+# npm
+npm install @tulls-md/tulldoc
+
+# pnpm
+pnpm add @tulls-md/tulldoc
+
+# yarn
+yarn add @tulls-md/tulldoc
+
+# bun
+bun add @tulls-md/tulldoc
+```
+
 ## Getting started
 
 ### 1. Wrap your Next.js config
@@ -105,7 +121,17 @@ The core package, `@tulls-md/tulldoc`, exposes three entry points:
 Documenting React components from their source code is handled by a **separate** package, installed on demand:
 
 ```bash
+# npm
+npm install @tulls-md/tulldoc-code
+
+# pnpm
 pnpm add @tulls-md/tulldoc-code
+
+# yarn
+yarn add @tulls-md/tulldoc-code
+
+# bun
+bun add @tulls-md/tulldoc-code
 ```
 
 | Entry point                     | Purpose                                                                  |

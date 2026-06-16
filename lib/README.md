@@ -1,27 +1,40 @@
 # @tulls-md/tulldoc
 
-Ядро для быстрого создания сайтов документации компонентных библиотек на базе Next.js - MDX-сайт с роутингом из файловой системы, навигацией и готовыми UI-блоками.
+> The core of Tulldoc — quickly build documentation sites for component libraries with Next.js. An MDX site with file-system routing, generated navigation, and batteries-included UI blocks.
 
-> Документирование компонентов из исходного кода (таблицы пропсов из TypeScript-типов, автопримеры по union-типам, `.doc.tsx`-документы) - отдельный аддон [`@tulls-md/tulldoc-code`](#документирование-компонентов-аддон), устанавливаемый дополнительно.
+[**📖 Documentation**](https://tulldoc.tulls.ru/) · [Getting started](#getting-started) · [Addon](#documenting-components-addon)
 
-## Возможности
+> [!NOTE]
+> Documenting components from source — props tables from TypeScript types, auto-generated variant examples, and `.doc.tsx` documents — lives in a separate addon, [`@tulls-md/tulldoc-code`](#documenting-components-addon), installed on demand.
 
-- **Роутинг из файловой системы** - `.mdx`-файлы в `contentDir` автоматически становятся страницами
-- **Боковая навигация** - строится из структуры папок, порядок управляется через `meta.json`
-- **Готовые UI-блоки** - `CodeBlock`, `Preview`, `DocTabs`, `DocNotice` и другие
-- **Подсветка синтаксиса** через Shiki, поддержка GFM и frontmatter
+## Features
 
-## Установка
+- 📁 **File-system routing** — every `.mdx` file in your `contentDir` automatically becomes a page.
+- 🧭 **Generated sidebar** — built from your folder structure, with ordering controlled via `meta.json`.
+- 🧱 **Batteries-included UI** — ready-made blocks like `CodeBlock`, `Preview`, `DocTabs`, `DocNotice`, and more.
+- 🎨 **First-class syntax highlighting** — powered by [Shiki](https://shiki.style), with GFM and frontmatter support.
+
+## Installation
 
 ```bash
+# npm
 npm install @tulls-md/tulldoc
+
+# pnpm
+pnpm add @tulls-md/tulldoc
+
+# yarn
+yarn add @tulls-md/tulldoc
+
+# bun
+bun add @tulls-md/tulldoc
 ```
 
-Peer-зависимости: `next >= 16`, `react >= 19`, `react-dom >= 19`.
+**Peer dependencies:** `next >= 16`, `react >= 19`, `react-dom >= 19`.
 
-## Быстрый старт
+## Getting started
 
-Оберните конфиг Next.js:
+### 1. Wrap your Next.js config
 
 ```ts
 // next.config.ts
@@ -30,7 +43,7 @@ import { withTulldoc } from "@tulls-md/tulldoc/config";
 export default withTulldoc();
 ```
 
-Создайте источник документации:
+### 2. Create a documentation source
 
 ```ts
 // src/docs.ts
@@ -40,15 +53,16 @@ import { createDocSource } from "@tulls-md/tulldoc/server";
 export const docs = createDocSource({
   contentDir: join(process.cwd(), "src/content"),
   importContent: (path) => import(`./content/${path}.mdx`),
-  lang: "ru",
+  lang: "en",
 });
 ```
 
-И подключите роутер в App Router:
+### 3. Wire up the App Router
 
 ```tsx
 // src/app/layout.tsx
 import { docs } from "@/docs";
+
 export default docs.Layout;
 ```
 
@@ -63,20 +77,32 @@ export const generateMetadata = docs.generateMetadata;
 export default docs.Page;
 ```
 
-## Точки входа пакета
+That's it — drop `.mdx` files into `src/content` and they become pages. See the [**Getting Started**](https://tulldoc.tulls.ru/) section of the docs for the full walkthrough.
 
-| Путь                       | Назначение                                          |
-| -------------------------- | --------------------------------------------------- |
-| `@tulls-md/tulldoc`        | UI-блоки и MDX-утилиты (клиент + сервер)            |
-| `@tulls-md/tulldoc/server` | Серверные хелперы: `createDocSource`, `getNavItems` |
-| `@tulls-md/tulldoc/config` | `withTulldoc` - обёртка для `next.config.ts`        |
+## Package entry points
 
-## Документирование компонентов (аддон)
+| Entry point                | Purpose                                              |
+| -------------------------- | ---------------------------------------------------- |
+| `@tulls-md/tulldoc`        | UI blocks and MDX utilities (client + server)        |
+| `@tulls-md/tulldoc/server` | Server helpers: `createDocSource`, `getNavItems`     |
+| `@tulls-md/tulldoc/config` | `withTulldoc` — the wrapper for `next.config.ts`     |
 
-Для таблиц пропсов, автопримеров и `.doc.tsx`-документов установите аддон и подключите плагин:
+## Documenting components (addon)
+
+For props tables, auto-generated examples, and `.doc.tsx` documents, install the addon and register its plugin:
 
 ```bash
+# npm
 npm install @tulls-md/tulldoc-code
+
+# pnpm
+pnpm add @tulls-md/tulldoc-code
+
+# yarn
+yarn add @tulls-md/tulldoc-code
+
+# bun
+bun add @tulls-md/tulldoc-code
 ```
 
 ```ts
@@ -96,10 +122,10 @@ export const docs = createDocSource({
 });
 ```
 
-Подробнее - в README пакета [`@tulls-md/tulldoc-code`](https://github.com/tulls-md/tulldoc/tree/main/lib-code).
+Learn more in the [`@tulls-md/tulldoc-code`](https://github.com/tulls-md/tulldoc/tree/main/lib-code) README.
 
-Полная документация и исходный код - в [репозитории tulls-md/tulldoc](https://github.com/tulls-md/tulldoc).
+Full documentation: **[tulldoc.tulls.ru](https://tulldoc.tulls.ru/)** · Source code: [tulls-md/tulldoc](https://github.com/tulls-md/tulldoc).
 
-## Лицензия
+## License
 
 MIT

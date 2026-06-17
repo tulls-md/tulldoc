@@ -14,5 +14,12 @@ export interface TulldocPlugin {
   renderDoc(args: {
     file: ContentFile;
     strings: DocStrings;
-  }): Promise<{ headings: TocHeading[]; content: ReactNode }>;
+    /** Построитель ссылки на файл в репозитории; undefined, если repo не задан */
+    sourceUrl?: (filePath: string) => string | undefined;
+  }): Promise<{
+    headings: TocHeading[];
+    content: ReactNode;
+    /** Ссылка на исходник документируемого компонента, если доступна */
+    sourceHref?: string;
+  }>;
 }

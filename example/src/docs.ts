@@ -11,6 +11,7 @@ export const docs = createDocSource({
       importDoc: (path) => import(`./content/${path}.doc.tsx`),
       componentsDir: join(process.cwd(), "src/components"),
       examplesDir: join(process.cwd(), "src/examples"),
+      // repo: { url: "https://github.com/tulls-md/ui-components", branch: "main" },
     }),
   ],
   lang: "ru",

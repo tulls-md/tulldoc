@@ -37,3 +37,10 @@ export interface PaginationLink {
   href: string;
   label: string;
 }
+
+export interface SourceLink {
+  href: string;
+  label: string;
+  /** edit - файл страницы (.mdx/.doc.tsx); component - исходник компонента */
+  kind: "edit" | "component";
+}

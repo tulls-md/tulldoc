@@ -1,5 +1,10 @@
 import type { ComponentType } from "react";
 import type { ContentFile, DocStrings, TulldocPlugin } from "@tulls-md/tulldoc";
+import {
+  buildSourceUrl,
+  findGitRoot,
+  type RepoConfig,
+} from "@tulls-md/tulldoc/server";
 import { buildDocModel } from "./build-model";
 import { DocContent } from "./doc-content";
 import type { DocMeta } from "./doc-meta";
@@ -15,6 +20,13 @@ interface ComponentDocsOptions {
   componentsDir: string;
   /** Корень примеров - для кода ручных примеров */
   examplesDir?: string;
+  /**
+   * Репозиторий компонентов для ссылки "Исходник компонента". Указывайте,
+   * если компоненты лежат в отдельном репозитории от документации. Путь к файлу
+   * определяется относительно git-корня componentsDir. Если не задан -
+   * используется repo документации (createDocSource) - подходит для монорепо.
+   */
+  repo?: RepoConfig;
 }
 
 /**
@@ -25,6 +37,7 @@ export function componentDocs({
   importDoc,
   componentsDir,
   examplesDir,
+  repo,
 }: ComponentDocsOptions): TulldocPlugin {
   return {
     getMetadata(filePath: string) {
@@ -37,9 +50,11 @@ export function componentDocs({
     async renderDoc({
       file,
       strings,
+      sourceUrl,
     }: {
       file: ContentFile;
       strings: DocStrings;
+      sourceUrl?: (filePath: string) => string | undefined;
     }) {
       const { default: docFn } = await importDoc(file.importPath);
       if (typeof docFn !== "function") {
@@ -50,8 +65,13 @@ export function componentDocs({
       const meta = docFn();
       const staticInfo = extractDocStrings(file.filePath);
       const model = buildDocModel({ meta, strings, componentsDir, staticInfo });
+      // Отдельный repo компонентов имеет приоритет; иначе - repo документации
+      const componentHref = repo
+        ? buildSourceUrl(repo, model.source.filePath, findGitRoot(componentsDir))
+        : sourceUrl?.(model.source.filePath);
       return {
         headings: model.headings,
+        sourceHref: componentHref,
         content: (
           <DocContent
             meta={meta}

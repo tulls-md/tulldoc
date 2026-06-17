@@ -1,7 +1,7 @@
 {
   "name": "@tulls-md/tulldoc",
   "private": false,
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Библиотека для быстрого создания сайтов документации компонентных библиотек на базе Next.js",
   "license": "MIT",
   "repository": {
@@ -57,6 +57,7 @@
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^16.2.7",
+    "@phosphor-icons/react": "^2.1.10",
     "clsx": "^2.1.1",
     "gray-matter": "^4.0.3",
     "remark-frontmatter": "^5.0.0",

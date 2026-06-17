@@ -17,18 +17,16 @@ import {
 } from "../content/nav-items";
 import { extractHeadings } from "../shared/extract-headings";
 import { getDocStrings } from "../shared/strings";
+import { buildSourceUrl, findGitRoot, type RepoConfig } from "../shared/repo";
+import type { SourceLink } from "../shared/types";
 import type { TulldocPlugin } from "./plugin";
 
 interface DocSourceOptions {
   contentDir: string;
-  /** Импорт .mdx-файлов; обязателен, если в contentDir есть .mdx-файлы */
   importContent?: (path: string) => Promise<{ default: ComponentType }>;
-  /**
-   * Плагины-расширения. Документирование компонентов (.doc.tsx) добавляет
-   * componentDocs() из @tulls-md/tulldoc-code.
-   */
   plugins?: TulldocPlugin[];
   lang?: string;
+  repo?: RepoConfig;
 }
 
 interface PageProps {
@@ -40,7 +38,13 @@ export function createDocSource({
   importContent,
   plugins,
   lang,
+  repo,
 }: DocSourceOptions) {
+  function sourceHref(filePath: string): string | undefined {
+    if (!repo) return undefined;
+    return buildSourceUrl(repo, filePath, findGitRoot(contentDir));
+  }
+
   function requireDocPlugin(filePath: string): TulldocPlugin {
     const plugin = plugins?.[0];
     if (!plugin) {
@@ -91,9 +95,26 @@ export function createDocSource({
     const { prev, next } = resolvePagination(sidebarItems, slugPath);
     const strings = getDocStrings(lang);
 
+    const editHref = sourceHref(file.filePath);
+    const editLink: SourceLink[] = editHref
+      ? [{ href: editHref, label: strings.editPage, kind: "edit" }]
+      : [];
+
     if (file.kind === "doc") {
       const plugin = requireDocPlugin(file.filePath);
-      const { headings, content } = await plugin.renderDoc({ file, strings });
+      const {
+        headings,
+        content,
+        sourceHref: componentHref,
+      } = await plugin.renderDoc({ file, strings, sourceUrl: sourceHref });
+      const sourceLinks: SourceLink[] = [...editLink];
+      if (componentHref) {
+        sourceLinks.push({
+          href: componentHref,
+          label: strings.componentSource,
+          kind: "component",
+        });
+      }
       return (
         <DocPage
           headings={headings}
@@ -103,6 +124,7 @@ export function createDocSource({
           prev={prev}
           next={next}
           tocTitle={strings.onThisPage}
+          sourceLinks={sourceLinks}
         >
           {content}
         </DocPage>
@@ -126,6 +148,7 @@ export function createDocSource({
         prev={prev}
         next={next}
         tocTitle={strings.onThisPage}
+        sourceLinks={editLink}
       >
         <Content />
       </DocPage>
@@ -134,7 +157,12 @@ export function createDocSource({
 
   function Layout({ children }: { children: ReactNode }) {
     return (
-      <DocLayout contentDir={contentDir} lang={lang} plugins={plugins}>
+      <DocLayout
+        contentDir={contentDir}
+        lang={lang}
+        plugins={plugins}
+        repo={repo}
+      >
         {children}
       </DocLayout>
     );

@@ -32,6 +32,10 @@
   border: 1px dashed var(--green-7);
   padding: var(--space-8x);
   border-radius: 10px;
+
+  background-color: var(--green-3);
+  background-image: radial-gradient(var(--green-a6) 1px, transparent 1.6px);
+  background-size: 11px 11px;
 }
 
 .Cell {

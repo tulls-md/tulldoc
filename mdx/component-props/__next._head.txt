@@ -1,5 +1,5 @@
 1:"$Sreact.fragment"
-2:I[97367,["/_next/static/chunks/2q1g83b-vm5pf.js","/_next/static/chunks/14mrh2-p_w84d.js"],"ViewportBoundary"]
-3:I[97367,["/_next/static/chunks/2q1g83b-vm5pf.js","/_next/static/chunks/14mrh2-p_w84d.js"],"MetadataBoundary"]
+2:I[97367,["/_next/static/chunks/2nnzp_o3481mc.js","/_next/static/chunks/14mrh2-p_w84d.js"],"ViewportBoundary"]
+3:I[97367,["/_next/static/chunks/2nnzp_o3481mc.js","/_next/static/chunks/14mrh2-p_w84d.js"],"MetadataBoundary"]
 4:"$Sreact.suspense"
-0:{"rsc":["$","$1","h",{"children":[null,["$","$L2",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L3",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"ComponentProps"}],["$","meta","1",{"name":"description","content":"Хелпер для автоматической таблицы пропсов из TypeScript-типов"}]]}]}]}],null]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"PdOcfQUo0j9E1v5CGlKOt"}
+0:{"rsc":["$","$1","h",{"children":[null,["$","$L2",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L3",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"ComponentProps"}],["$","meta","1",{"name":"description","content":"Хелпер для автоматической таблицы пропсов из TypeScript-типов"}]]}]}]}],null]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"bD1_AGiGInex1UpXK_8Ib"}

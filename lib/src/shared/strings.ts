@@ -10,6 +10,8 @@ export interface DocStrings {
   hideCode: string;
   required: string;
   inheritedFrom: string;
+  editPage: string;
+  componentSource: string;
 }
 
 const ru: DocStrings = {
@@ -25,6 +27,8 @@ const ru: DocStrings = {
   hideCode: "Скрыть код",
   required: "обязательный",
   inheritedFrom: "Наследуется от",
+  editPage: "Редактировать страницу",
+  componentSource: "Исходник",
 };
 
 const en: DocStrings = {
@@ -40,6 +44,8 @@ const en: DocStrings = {
   hideCode: "Hide code",
   required: "required",
   inheritedFrom: "Inherited from",
+  editPage: "Edit this page",
+  componentSource: "Source",
 };
 
 export function getDocStrings(lang?: string): DocStrings {

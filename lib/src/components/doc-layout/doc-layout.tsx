@@ -3,6 +3,7 @@ import { Header } from "../header/header";
 import { Sidebar } from "../sidebar/sidebar";
 import { getNavigation, itemHref } from "../../content/nav-items";
 import { getDocStrings } from "../../shared/strings";
+import { resolveProvider, type RepoConfig } from "../../shared/repo";
 import type { TulldocPlugin } from "../../doc/plugin";
 import { LayoutShell } from "./layout-shell";
 import { MobileNavProvider } from "../mobile-nav/mobile-nav";
@@ -13,6 +14,7 @@ interface DocLayoutProps {
   contentDir: string;
   lang?: string;
   plugins?: TulldocPlugin[];
+  repo?: RepoConfig;
 }
 
 export function DocLayout({
@@ -20,6 +22,7 @@ export function DocLayout({
   contentDir,
   lang = "en",
   plugins,
+  repo,
 }: DocLayoutProps) {
   const { sidebarItems, headerItems } = getNavigation(contentDir, plugins);
   const firstDoc = sidebarItems.find((item) => !item.external);
@@ -40,6 +43,11 @@ export function DocLayout({
                       href: itemHref(firstDoc),
                       label: getDocStrings(lang).documentation,
                     }
+                  : undefined
+              }
+              repo={
+                repo
+                  ? { href: repo.url, provider: resolveProvider(repo) }
                   : undefined
               }
             />

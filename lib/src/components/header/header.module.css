@@ -46,6 +46,26 @@
   font-weight: 500;
 }
 
+.RepoLink {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  color: var(--gray-11);
+  text-decoration: none;
+  transition:
+    background 120ms,
+    color 120ms;
+}
+
+.RepoLink:hover {
+  background: var(--gray-3);
+  color: var(--gray-12);
+}
+
 .Dropdown {
   position: relative;
 }

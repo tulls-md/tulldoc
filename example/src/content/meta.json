@@ -1,6 +1,3 @@
 {
-  "pages": ["overview", "mdx-example"],
-  "header": [
-    { "label": "GitHub", "href": "https://github.com/tulls-md/tulldoc" }
-  ]
+  "pages": ["overview", "mdx-example"]
 }

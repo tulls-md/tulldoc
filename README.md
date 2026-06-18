@@ -10,7 +10,7 @@
 [![next](https://img.shields.io/badge/Next.js-%E2%89%A516-black)](https://nextjs.org)
 [![react](https://img.shields.io/badge/React-%E2%89%A519-149eca)](https://react.dev)
 
-[**📖 Documentation**](https://tulldoc.tulls.ru/) · [Getting started](#getting-started) · [Addon](#addon-tulls-mdtulldoc-code)
+[**📖 Documentation**](https://tulldoc.tulls.ru/) · [Getting started](https://lemu.tulls.ru) · [Live demo](#getting-started) · [Addon](#addon-tulls-mdtulldoc-code)
 
 </div>
 

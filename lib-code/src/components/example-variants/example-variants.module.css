@@ -6,11 +6,15 @@
 
 .Items {
   display: flex;
-  gap: var(--space-8x);
+  gap: var(--space-12x);
   height: 100%;
   padding: var(--space-8x);
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+
+  background-color: var(--gray-3);
+  background-image: radial-gradient(var(--gray-a6) 1px, transparent 1.6px);
+  background-size: 11px 11px;
 }
 
 .Row {
@@ -28,14 +32,6 @@
   flex-direction: column;
   gap: var(--space-4x);
   align-items: flex-start;
-
-  border: 1px dashed var(--green-7);
-  padding: var(--space-8x);
-  border-radius: 10px;
-
-  background-color: var(--green-3);
-  background-image: radial-gradient(var(--green-a6) 1px, transparent 1.6px);
-  background-size: 11px 11px;
 }
 
 .Cell {
@@ -44,7 +40,13 @@
 }
 
 .Label {
-  color: var(--color-text-secondary, #64748b);
+  padding: 2px 8px;
+  border-radius: 6px;
+
+  color: var(--green-12);
+
+  background-color: var(--green-2);
+  border: 1px dashed var(--green-7);
 }
 
 @media (max-width: 768px) {

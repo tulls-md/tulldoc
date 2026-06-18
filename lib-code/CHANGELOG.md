@@ -1,5 +1,11 @@
 # @tulls-md/tulldoc-code
 
+## 0.2.1
+
+### Patch Changes
+
+- 09aef26: redesign of the React component preview
+
 ## 0.2.0
 
 ### Added

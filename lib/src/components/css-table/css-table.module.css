@@ -1,0 +1,41 @@
+.Wrapper {
+  margin-bottom: var(--space-10x);
+}
+
+.Title {
+  font-weight: var(--font-semibold);
+  color: var(--gray-12);
+  margin: 0;
+}
+
+.Subtitle {
+  color: var(--gray-10);
+  margin: var(--space-2x) 0 var(--space-6x);
+}
+
+.Scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.Root {
+  width: 100%;
+}
+
+.Swatch {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--gray-5);
+  border-radius: var(--radius-2x);
+  vertical-align: middle;
+}
+
+.Bar {
+  display: inline-block;
+  min-width: 2px;
+  height: 8px;
+  background: var(--gray-8);
+  border-radius: var(--radius-2x);
+  vertical-align: middle;
+}

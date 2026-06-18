@@ -1,14 +1,12 @@
-# Changelog
+# @tulls-md/tulldoc
 
-All notable changes to the `@tulls-md/tulldoc` package are documented in this file.
+## 0.3.0
 
-## [0.2.1] - 2026-06-16
+### Added
 
-### Changed
+- Added a component to describe css variables in mdx
 
-- Translated all README files to English.
-
-## [0.2.0] - 2026-06-14
+## 0.2.0
 
 ### Added
 
@@ -16,10 +14,27 @@ All notable changes to the `@tulls-md/tulldoc` package are documented in this fi
 - Collapsible table of contents (TOC) on mobile: the heading becomes a button,
   the list of sections expands on tap and closes after a section is selected.
 
-### Changed
+## 0.1.0
 
-- Responsive layout for content blocks on narrow screens: props tables,
-  example blocks, and anatomy.
+### Tulldoc — Initial Release 🎉
 
-[0.2.1]: https://github.com/tulls-md/tulldoc/releases/tag/v0.2.1
-[0.2.0]: https://github.com/tulls-md/tulldoc/releases/tag/v0.2.0
+Tulldoc is a library for quickly building documentation sites for component libraries, powered by Next.js.
+
+Documentation is generated straight from your component source code: props tables are extracted from TypeScript types,
+and variant examples are
+produced automatically from union types — so your docs never drift out of sync with your code.
+
+▎ ⚠️ Early stage. The library is still under active development and the API may change before a stable 1.0.
+
+✨ Highlights
+
+Core (@tulls-md/tulldoc) — an MDX documentation site:
+
+File-system routing — .mdx files in your contentDir automatically become pages
+Auto sidebar navigation — built from your folder structure, with ordering controlled via meta.json
+Ready-made UI blocks — CodeBlock, Preview, DocTabs, DocNotice, and more
+Syntax highlighting via Shiki, plus GFM and frontmatter support
+📋 Requirements
+
+Peer dependencies: next >= 16, react >= 19, react-dom >= 19
+Development: Node.js >= 24, pnpm >= 10

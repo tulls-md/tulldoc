@@ -1,5 +1,11 @@
 # @tulls-md/tulldoc-code
 
+## 0.2.2
+
+### Patch Changes
+
+- 1c5114e: Fix: Preview component views
+
 ## 0.2.1
 
 ### Patch Changes

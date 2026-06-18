@@ -8,6 +8,8 @@ export { Sidebar } from "./components/sidebar/sidebar";
 export { TableOfContents } from "./components/toc/toc";
 export { DocTabs } from "./components/doc-tabs/doc-tabs";
 export { DocNotice } from "./components/doc-notice/doc-notice";
+export { CssTable } from "./components/css-table/css-table";
+export type { CssVarRow } from "./shared/extract-css-vars";
 export type { NavItem, PaginationLink, TocHeading } from "./shared/types";
 export type { ContentFile } from "./content/content-files";
 export type { TulldocPlugin } from "./doc/plugin";

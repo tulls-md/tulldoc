@@ -16,6 +16,10 @@ export default function ButtonDoc(): DocMeta<typeof Button> {
     defaultArgs: { label: "Click Me!" },
     mainExample: <ButtonExample />,
     anatomy: AnatomyComponent,
-    examples: [{ prop: "disabled", description: "Кастомный пример" }],
+    examples: [
+      { prop: "disabled", description: "Кастомный пример" },
+      { prop: "variant", view: "grid" },
+      { prop: "variant", view: "cell" },
+    ],
   };
 }

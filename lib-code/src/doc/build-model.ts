@@ -95,7 +95,7 @@ export function buildDocModel({
       title: entry.title ?? entry.prop,
       description: entry.description,
       prop: entry.prop,
-      view: entry.view ?? "row",
+      view: entry.view ?? "grid",
       args: { ...defaultArgs, ...entry.defaultArgs },
     });
   });
@@ -105,7 +105,7 @@ export function buildDocModel({
       kind: "auto",
       title: row.name,
       prop: row.name,
-      view: "row",
+      view: "grid",
       args: { ...defaultArgs },
     });
   }

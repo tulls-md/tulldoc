@@ -18,7 +18,7 @@ export function createComponentExamples(
   return async function AppComponentExamples({
     path,
     prop,
-    view = "row",
+    view = "grid",
     defaultArgs = {},
   }: {
     path: string;

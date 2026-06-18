@@ -3,7 +3,7 @@
  * их из исходников, компоненты только отображают.
  */
 
-export type ExampleView = "grid" | "row" | "cell";
+export type ExampleView = "grid" | "cell";
 
 export interface PropRow {
   name: string;

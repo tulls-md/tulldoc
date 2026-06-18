@@ -20,7 +20,7 @@ interface ExampleVariantsProps {
 
 export function ExampleVariants({
   variants,
-  view = "row",
+  view = "grid",
   code,
   previewHeight,
   showCodeLabel,
@@ -28,32 +28,21 @@ export function ExampleVariants({
 }: ExampleVariantsProps) {
   return (
     <div className={styles.Root}>
-      {view === "cell" ? (
-        variants.map((variant) => (
-          <Preview key={variant.label} height={previewHeight}>
-            <div className={clsx(styles.Item, styles.Cell)}>
+      <Preview height={previewHeight}>
+        <div
+          className={clsx(
+            styles.Items,
+            view === "cell" ? styles.Cell : styles.Grid,
+          )}
+        >
+          {variants.map((variant) => (
+            <div key={variant.label} className={styles.Item}>
               <span className={styles.Label}>{variant.label}</span>
               {variant.content}
             </div>
-          </Preview>
-        ))
-      ) : (
-        <Preview height={previewHeight}>
-          <div
-            className={clsx(
-              styles.Items,
-              view === "row" ? styles.Row : styles.Grid,
-            )}
-          >
-            {variants.map((variant) => (
-              <div key={variant.label} className={styles.Item}>
-                <span className={styles.Label}>{variant.label}</span>
-                {variant.content}
-              </div>
-            ))}
-          </div>
-        </Preview>
-      )}
+          ))}
+        </div>
+      </Preview>
       <CodeBlock
         lang="tsx"
         collapsible

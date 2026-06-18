@@ -156,6 +156,49 @@ TS-типу (union литералов или `boolean`), рендерит вар
 />
 ```
 
+## CSS-переменные
+
+Компонент `CssTable` читает CSS-файл, извлекает из него custom properties
+по правилам отбора и строит таблицу значений. Описания берутся из комментариев
+перед переменной, а превью (цветной квадрат или полоска размера) и сортировка
+по величине подбираются автоматически. Проп `src` — путь к файлу относительно
+корня проекта:
+
+<CssTable
+  title="Цвета"
+  description="Палитра дизайн-токенов из tokens.css"
+  src="src/styles/tokens.css"
+  include={["--color-*"]}
+/>
+
+```mdx
+<CssTable
+  title="Цвета"
+  description="Палитра дизайн-токенов из tokens.css"
+  src="src/styles/tokens.css"
+  include={["--color-*"]}
+/>
+```
+
+Правила отбора `include` принимают точные имена и шаблоны с `*`. Значения с
+размерами (px/rem/em) сортируются по величине, а не по алфавиту:
+
+<CssTable
+  title="Отступы"
+  description="Шкала спейсингов"
+  src="src/styles/tokens.css"
+  include={["--space-*"]}
+/>
+
+```mdx
+<CssTable
+  title="Отступы"
+  description="Шкала спейсингов"
+  src="src/styles/tokens.css"
+  include={["--space-*"]}
+/>
+```
+
 ## API
 
 Таблицу пропсов не нужно писать вручную — компонент `ComponentProps`

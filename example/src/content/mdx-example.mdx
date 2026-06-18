@@ -144,8 +144,9 @@ TS-типу (union литералов или `boolean`), рендерит вар
 <ComponentExamples path="components/button-disabled.example" prop="disabled" />
 ```
 
-Раскладка вариантов настраивается пропом `view` (`"row"`, `"grid"`
-или `"cell"`), а остальные пропсы примера задаются через `defaultArgs`:
+Раскладка вариантов настраивается пропом `view` (`"grid"` — варианты
+переносятся через flex-wrap, `"cell"` — по одному варианту в строку
+на всю ширину), а остальные пропсы примера задаются через `defaultArgs`:
 
 ```mdx
 <ComponentExamples

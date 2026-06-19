@@ -56,7 +56,7 @@ export function DocLayout({
             headerSlugs={headerItems
               .filter((item) => !item.external)
               .map((item) => item.slug)}
-            sidebar={<Sidebar items={sidebarItems} />}
+            sidebar={<Sidebar items={sidebarItems} lang={lang} />}
           >
             {children}
           </LayoutShell>

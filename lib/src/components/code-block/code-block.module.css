@@ -5,8 +5,7 @@
   line-height: 1.6;
 }
 
-/* shiki рендерит <pre> и <code> - сбрасываем лишние отступы */
-.Root :global(pre) {
+.Root :global(div pre) {
   margin: 0;
   padding: 16px 20px;
   overflow-x: auto;

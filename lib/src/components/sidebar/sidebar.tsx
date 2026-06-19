@@ -1,9 +1,11 @@
 import type { NavItem } from "../../shared/types";
+import { getDocStrings } from "../../shared/strings";
 import styles from "./sidebar.module.css";
 import { SidebarLink } from "./sidebar-link";
 
 interface SidebarProps {
   items: NavItem[];
+  lang?: string;
 }
 
 function renderItem({ slug, label, tabs, external, href }: NavItem) {
@@ -19,7 +21,7 @@ function renderItem({ slug, label, tabs, external, href }: NavItem) {
   );
 }
 
-export function Sidebar({ items }: SidebarProps) {
+export function Sidebar({ items, lang }: SidebarProps) {
   const ungrouped = items.filter((i) => i.group === null);
   const groups = items
     .filter((i) => i.group !== null)
@@ -42,6 +44,14 @@ export function Sidebar({ items }: SidebarProps) {
           </div>
         ))}
       </nav>
+      <a
+        href="https://tulldoc.tulls.ru/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={styles.Footer}
+      >
+        {getDocStrings(lang).documentedInTulls}
+      </a>
     </aside>
   );
 }

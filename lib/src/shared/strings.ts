@@ -12,6 +12,7 @@ export interface DocStrings {
   inheritedFrom: string;
   editPage: string;
   componentSource: string;
+  documentedInTulls: string;
 }
 
 const ru: DocStrings = {
@@ -29,6 +30,7 @@ const ru: DocStrings = {
   inheritedFrom: "Наследуется от",
   editPage: "Редактировать страницу",
   componentSource: "Исходник",
+  documentedInTulls: "Задокументировано в Tulldoc",
 };
 
 const en: DocStrings = {
@@ -46,6 +48,7 @@ const en: DocStrings = {
   inheritedFrom: "Inherited from",
   editPage: "Edit this page",
   componentSource: "Source",
+  documentedInTulls: "Documented in Tulldoc",
 };
 
 export function getDocStrings(lang?: string): DocStrings {

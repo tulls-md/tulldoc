@@ -1,5 +1,12 @@
 # @tulls-md/tulldoc
 
+## 0.4.1
+
+### Patch Changes
+
+- 5bbf6e4: Add link to tulldoc in footer
+- caf28c6: Fix: <pre> margin-button in code-block
+
 ## 0.3.0
 
 ### Added

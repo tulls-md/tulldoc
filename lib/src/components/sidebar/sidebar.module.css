@@ -4,6 +4,21 @@
   border-right: 1px solid var(--gray-5);
   padding: var(--space-8x);
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.Footer {
+  margin-top: auto;
+  padding-top: var(--space-6x);
+  font-size: 12px;
+  color: var(--gray-9);
+  text-decoration: none;
+  transition: color 120ms;
+}
+
+.Footer:hover {
+  color: var(--gray-11);
 }
 
 .List {

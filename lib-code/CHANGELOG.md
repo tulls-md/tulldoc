@@ -1,5 +1,13 @@
 # @tulls-md/tulldoc-code
 
+## 0.2.3
+
+### Patch Changes
+
+- Updated dependencies [5bbf6e4]
+- Updated dependencies [caf28c6]
+  - @tulls-md/tulldoc@0.4.1
+
 ## 0.2.2
 
 ### Patch Changes

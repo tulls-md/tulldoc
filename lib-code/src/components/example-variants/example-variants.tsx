@@ -34,6 +34,7 @@ export function ExampleVariants({
           className={clsx(
             styles.Items,
             view === "cell" ? styles.Cell : styles.Grid,
+            variants.length === 1 && styles.Single,
           )}
         >
           {variants.map((variant) => (

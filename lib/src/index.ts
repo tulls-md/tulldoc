@@ -9,6 +9,7 @@ export { TableOfContents } from "./components/toc/toc";
 export { DocTabs } from "./components/doc-tabs/doc-tabs";
 export { DocNotice } from "./components/doc-notice/doc-notice";
 export { CssTable } from "./components/css-table/css-table";
+export { FontSpecimen } from "./components/font-specimen/font-specimen";
 export type { CssVarRow } from "./shared/extract-css-vars";
 export type { NavItem, PaginationLink, TocHeading } from "./shared/types";
 export type { ContentFile } from "./content/content-files";

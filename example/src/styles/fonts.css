@@ -1,0 +1,39 @@
+:root {
+  /* Семейство */
+  --demo-font-sans:
+    "Golos Text", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* Размеры */
+  --demo-text-sm: 0.875rem;
+  --demo-text-base: 1rem;
+  --demo-text-lg: 1.25rem;
+  --demo-text-xl: 1.5rem;
+  --demo-text-2xl: 2rem;
+  --demo-text-3xl: 2.5rem;
+
+  /* Веса */
+  --demo-font-regular: 400;
+  --demo-font-medium: 500;
+  --demo-font-semibold: 600;
+  --demo-font-bold: 700;
+
+  /* Межстрочные */
+  --demo-leading-tight: 1.15;
+  --demo-leading-normal: 1.4;
+
+  /* Роли — заголовок раздела */
+  --demo-font-display: var(--demo-font-bold) var(--demo-text-3xl) /
+    var(--demo-leading-tight) var(--demo-font-sans);
+  /* Роли — заголовок страницы */
+  --demo-font-heading: var(--demo-font-semibold) var(--demo-text-2xl) /
+    var(--demo-leading-tight) var(--demo-font-sans);
+  /* Роли — подзаголовок */
+  --demo-font-title: var(--demo-font-medium) var(--demo-text-xl) /
+    var(--demo-leading-tight) var(--demo-font-sans);
+  /* Роли — основной текст */
+  --demo-font-body: var(--demo-font-regular) var(--demo-text-base) /
+    var(--demo-leading-normal) var(--demo-font-sans);
+  /* Роли — подпись */
+  --demo-font-caption: var(--demo-font-regular) var(--demo-text-sm) /
+    var(--demo-leading-normal) var(--demo-font-sans);
+}

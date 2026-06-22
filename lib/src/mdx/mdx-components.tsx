@@ -3,6 +3,7 @@ import type { MDXComponents } from "mdx/types";
 import { CodeBlock } from "../components/code-block/code-block";
 import { Preview } from "../components/preview/preview";
 import { CssTable } from "../components/css-table/css-table";
+import { FontSpecimen } from "../components/font-specimen/font-specimen";
 import { slugify } from "../shared/slugify";
 
 function headingId(children: React.ReactNode): string {
@@ -23,6 +24,7 @@ export function getMDXComponents(extra: MDXComponents = {}): MDXComponents {
   return {
     Preview,
     CssTable,
+    FontSpecimen,
     h2: ({ children }) => {
       const id = headingId(children);
       return <h2 id={id}>{children}</h2>;

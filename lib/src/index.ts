@@ -16,6 +16,12 @@ export type { ContentFile } from "./content/content-files";
 export type { TulldocPlugin } from "./doc/plugin";
 export { getDocStrings } from "./shared/strings";
 export type { DocStrings } from "./shared/strings";
+export {
+  resolveLocalized,
+  isLocaleMap,
+  resolveLocaleConfig,
+} from "./shared/locale";
+export type { Localized, LocaleConfig } from "./shared/locale";
 export { slugify } from "./shared/slugify";
 export { extractHeadings } from "./shared/extract-headings";
 export { getMDXComponents, useMDXComponents } from "./mdx/mdx-components";

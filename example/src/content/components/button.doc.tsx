@@ -1,6 +1,5 @@
 import { Anatomy, type DocMeta } from "@tulls-md/tulldoc-code";
 import { Button } from "@/components";
-import ButtonExample from "@/examples/components/button.example";
 
 export default function ButtonDoc(): DocMeta<typeof Button> {
   const AnatomyComponent = (
@@ -14,7 +13,7 @@ export default function ButtonDoc(): DocMeta<typeof Button> {
   return {
     component: Button,
     defaultArgs: { label: "Click Me!" },
-    mainExample: <ButtonExample />,
+    mainExample: { label: "Click Me!", variant: "primary" },
     anatomy: AnatomyComponent,
     examples: [
       { prop: "disabled", description: "Кастомный пример" },

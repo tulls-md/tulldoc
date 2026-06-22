@@ -26,6 +26,7 @@ export function ExampleVariants({
   showCodeLabel,
   hideCodeLabel,
 }: ExampleVariantsProps) {
+  const showLabels = variants.length > 1;
   return (
     <div className={styles.Root}>
       <Preview height={previewHeight}>
@@ -37,7 +38,9 @@ export function ExampleVariants({
         >
           {variants.map((variant) => (
             <div key={variant.label} className={styles.Item}>
-              <span className={styles.Label}>{variant.label}</span>
+              {showLabels && (
+                <span className={styles.Label}>{variant.label}</span>
+              )}
               {variant.content}
             </div>
           ))}

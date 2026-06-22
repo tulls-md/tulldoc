@@ -4,6 +4,11 @@ import { getComponentParameter } from "./program";
 
 export type PropValue = string | number | boolean;
 
+/** boolean-проп приходит как union [true, false] - пара boolean-литералов. */
+export function isBooleanPair(values: PropValue[]): boolean {
+  return values.length === 2 && values.every((v) => typeof v === "boolean");
+}
+
 /**
  * values - тип перечислим (union литералов или boolean);
  * string/number - свободный примитив, перечислить нельзя, но значение

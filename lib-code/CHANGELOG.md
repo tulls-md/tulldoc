@@ -1,5 +1,11 @@
 # @tulls-md/tulldoc-code
 
+## 0.3.0
+
+### Minor Changes
+
+- bd68678: Generate main example with props
+
 ## 0.2.5
 
 ### Patch Changes

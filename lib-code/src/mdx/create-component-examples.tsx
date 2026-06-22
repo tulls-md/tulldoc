@@ -2,7 +2,7 @@ import { join } from "path";
 import type { ComponentType } from "react";
 import { ExampleVariants } from "../components/example-variants/example-variants";
 import type { ExampleView } from "../shared/types";
-import { extractPropValues } from "../props/prop-values";
+import { extractPropValues, isBooleanPair } from "../props/prop-values";
 import { extractPreviewHeight } from "../examples/preview-height";
 import { generateVariantsCode } from "../examples/variants-code";
 import { getDocStrings } from "@tulls-md/tulldoc";
@@ -27,7 +27,13 @@ export function createComponentExamples(
     defaultArgs?: Record<string, unknown>;
   }) {
     const filePath = join(examplesDir, `${path}.tsx`);
-    const values = extractPropValues({ filePath, propName: prop });
+    let values = extractPropValues({ filePath, propName: prop });
+    if (isBooleanPair(values)) {
+      // boolean - показываем только недефолтное значение, один вариант
+      const argDefault = defaultArgs[prop];
+      const defaultValue = typeof argDefault === "boolean" ? argDefault : false;
+      values = [!defaultValue];
+    }
     const { default: Example } = await importFn(path);
     const VariantExample = Example as ComponentType<Record<string, unknown>>;
     const code = generateVariantsCode({

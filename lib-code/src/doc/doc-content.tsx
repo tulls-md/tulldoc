@@ -6,7 +6,7 @@ import { PropsTable } from "../components/props-table/props-table";
 import { flattenExampleCode } from "../examples/flatten-code";
 import { extractPreviewHeight } from "../examples/preview-height";
 import { extractComponentProps } from "../props/extract-props";
-import { extractPropValueInfo } from "../props/prop-values";
+import { extractPropValueInfo, isBooleanPair } from "../props/prop-values";
 import {
   componentValueName,
   serializeComponentJsx,
@@ -75,7 +75,24 @@ function AutoExample({
   let code: string;
   try {
     const info = extractPropValueInfo({ ...source, propName: example.prop });
-    if (info.kind === "values") {
+    if (info.kind === "values" && isBooleanPair(info.values)) {
+      // boolean - показываем только недефолтное значение, один вариант
+      const row = extractComponentProps(source).rows.find(
+        (r) => r.name === example.prop,
+      );
+      const componentDefault =
+        row?.defaultValue === "true"
+          ? true
+          : row?.defaultValue === "false"
+            ? false
+            : undefined;
+      const argDefault = example.args[example.prop];
+      const defaultValue =
+        typeof argDefault === "boolean"
+          ? argDefault
+          : (componentDefault ?? false);
+      values = [!defaultValue];
+    } else if (info.kind === "values") {
       values = info.values;
     } else if (example.args[example.prop] !== undefined) {
       // неперечислимый тип, но значение задано в defaultArgs - один вариант с ним

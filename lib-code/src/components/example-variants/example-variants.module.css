@@ -31,6 +31,15 @@
   width: 100%;
 }
 
+.Single {
+  align-items: center;
+  justify-content: center;
+}
+
+.Single .Item {
+  align-items: center;
+}
+
 .Item {
   display: flex;
   flex-direction: column;

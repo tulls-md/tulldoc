@@ -1,5 +1,12 @@
 # @tulls-md/tulldoc-code
 
+## 0.2.5
+
+### Patch Changes
+
+- c4fc7ab: Fix: Show only one variant example in single prop
+- 404e62c: Fix: Center single variant example
+
 ## 0.2.4
 
 ### Patch Changes

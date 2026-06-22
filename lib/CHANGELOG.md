@@ -1,5 +1,11 @@
 # @tulls-md/tulldoc
 
+## 0.5.0
+
+### Minor Changes
+
+- 7277036: Add overview code-blocks and font showcase block
+
 ## 0.4.1
 
 ### Patch Changes

@@ -48,9 +48,14 @@ export interface DocMeta<C extends ComponentType<any> = ComponentType<any>> {
   componentName?: string;
   /**
    * Главный пример - показывается сразу под описанием, над анатомией.
-   * Компонент-пример из examplesDir; код показывается целиком, с импортами.
+   * Два режима:
+   * - ReactElement: готовый компонент-пример из examplesDir; код показывается
+   *   целиком, с импортами.
+   * - объект пропсов: пример строится автоматически - документируемый компонент
+   *   рендерится с этими пропсами (children задаётся ключом children),
+   *   код-блок не показывается.
    */
-  mainExample?: ReactElement;
+  mainExample?: ReactElement | Partial<ComponentProps<C>>;
   defaultArgs?: Partial<ComponentProps<C>>;
   examples?: DocExample<ComponentProps<C>>[];
 }

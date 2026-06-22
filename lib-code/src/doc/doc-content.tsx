@@ -1,5 +1,11 @@
-import { Fragment, type ComponentType, type ReactElement } from "react";
-import { DocNotice } from "@tulls-md/tulldoc";
+import {
+  Fragment,
+  isValidElement,
+  type ComponentType,
+  type ReactElement,
+  type ReactNode,
+} from "react";
+import { DocNotice, Preview } from "@tulls-md/tulldoc";
 import { ComponentPreview } from "../components/component-preview/component-preview";
 import { ExampleVariants } from "../components/example-variants/example-variants";
 import { PropsTable } from "../components/props-table/props-table";
@@ -42,6 +48,23 @@ function ManualExample({
       showCodeLabel={strings.showCode}
       hideCodeLabel={strings.hideCode}
     />
+  );
+}
+
+function MainArgsExample({
+  component,
+  args,
+}: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  component: ComponentType<any>;
+  args: Record<string, unknown>;
+}) {
+  const { children, ...attrs } = args;
+  const Component = component;
+  return (
+    <Preview>
+      <Component {...attrs}>{children as ReactNode}</Component>
+    </Preview>
   );
 }
 
@@ -159,14 +182,20 @@ export function DocContent({
     <>
       <h1>{model.title}</h1>
       {meta.description && <p>{meta.description}</p>}
-      {meta.mainExample && (
-        <ManualExample
-          element={meta.mainExample}
-          staticName={model.mainExampleName}
-          examplesDir={examplesDir}
-          strings={strings}
-        />
-      )}
+      {meta.mainExample &&
+        (isValidElement(meta.mainExample) ? (
+          <ManualExample
+            element={meta.mainExample}
+            staticName={model.mainExampleName}
+            examplesDir={examplesDir}
+            strings={strings}
+          />
+        ) : (
+          <MainArgsExample
+            component={meta.component}
+            args={meta.mainExample as Record<string, unknown>}
+          />
+        ))}
       {meta.anatomy && (
         <>
           <h2 id={model.anatomyId}>{strings.anatomy}</h2>

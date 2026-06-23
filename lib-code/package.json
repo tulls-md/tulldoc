@@ -1,7 +1,7 @@
 {
   "name": "@tulls-md/tulldoc-code",
   "private": false,
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Аддон для @tulls-md/tulldoc: документирование React-компонентов из исходного кода (таблицы пропсов, автопримеры, .doc.tsx)",
   "license": "MIT",
   "repository": {

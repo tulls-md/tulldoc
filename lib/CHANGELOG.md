@@ -1,5 +1,11 @@
 # @tulls-md/tulldoc
 
+## 0.6.0
+
+### Minor Changes
+
+- 7d033c0: Feature: create documentation sections
+
 ## 0.5.0
 
 ### Minor Changes

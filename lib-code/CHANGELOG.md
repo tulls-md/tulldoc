@@ -1,5 +1,12 @@
 # @tulls-md/tulldoc-code
 
+## 0.3.2
+
+### Patch Changes
+
+- Updated dependencies [7d033c0]
+  - @tulls-md/tulldoc@0.6.0
+
 ## 0.3.1
 
 ### Patch Changes

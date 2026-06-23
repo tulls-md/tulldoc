@@ -1,8 +1,14 @@
-import { existsSync, readdirSync, readFileSync } from "fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "fs";
 import { join } from "path";
 import { cache } from "react";
 import matter from "gray-matter";
-import type { HeaderItem, NavItem, PaginationLink } from "../shared/types";
+import { getDocStrings } from "../shared/strings";
+import type {
+  HeaderItem,
+  NavItem,
+  PaginationLink,
+  Section,
+} from "../shared/types";
 import {
   DOC_EXT,
   TAB_DIR_PREFIX,
@@ -22,11 +28,20 @@ interface LinkEntry {
 /** Имя файла/папки или внешняя ссылка */
 type MetaEntry = string | LinkEntry;
 
+/** Раздел: имя папки верхнего уровня или { name, label } */
+type SectionEntry = string | { name: string; label?: string };
+
 interface DirMeta {
   title?: string;
   pages?: MetaEntry[];
   /** Имена файлов/папок для шапки сайта; учитывается только в корневом meta.json */
   header?: MetaEntry[];
+  /** Папки верхнего уровня, ставшие разделами; учитывается только в корневом meta.json */
+  sections?: SectionEntry[];
+}
+
+function sectionName(entry: SectionEntry): string {
+  return typeof entry === "string" ? entry : entry.name;
 }
 
 function readDirMeta(dir: string): DirMeta {
@@ -44,6 +59,13 @@ function readDirMeta(dir: string): DirMeta {
     if (typeof entry !== "string" && !(entry?.label && entry?.href)) {
       throw new Error(
         `tulldoc: внешняя ссылка в ${metaPath} должна содержать label и href`,
+      );
+    }
+  }
+  for (const entry of meta.sections ?? []) {
+    if (typeof entry !== "string" && !entry?.name) {
+      throw new Error(
+        `tulldoc: раздел в ${metaPath} должен быть строкой или содержать name`,
       );
     }
   }
@@ -212,27 +234,64 @@ function scanDir(
 }
 
 export interface Navigation {
-  /** Пункты бокового меню - всё, кроме помеченного в header */
+  /** Боковое меню раздела по умолчанию - совпадает с sections[0].sidebarItems */
   sidebarItems: NavItem[];
+  /** Все разделы по порядку; первый - раздел по умолчанию (slug: null) */
+  sections: Section[];
   /** Пункты шапки сайта - из списка header корневого meta.json */
   headerItems: HeaderItem[];
-  /** Сайдбар + контент шапки - для resolveDocTabs и метаданных */
+  /** Пункты всех разделов + контент шапки - для resolveDocTabs и метаданных */
   allItems: NavItem[];
 }
 
 export const getNavigation = cache(
-  (contentDir: string, plugins?: TulldocPlugin[]): Navigation => {
-    const headerEntries = readDirMeta(contentDir).header ?? [];
+  (
+    contentDir: string,
+    plugins?: TulldocPlugin[],
+    lang?: string,
+  ): Navigation => {
+    const rootMeta = readDirMeta(contentDir);
+    const headerEntries = rootMeta.header ?? [];
     const headerNames = headerEntries.filter(
       (e): e is string => typeof e === "string",
     );
+    const sectionEntries = rootMeta.sections ?? [];
+    const sectionNames = sectionEntries.map(sectionName);
+
+    // Папки-разделы исключаем из дефолтного сайдбара, чтобы они не стали группами
     const sidebarItems = scanDir(
       contentDir,
       [],
       null,
-      new Set(headerNames),
+      new Set([...headerNames, ...sectionNames]),
       plugins,
     );
+
+    const sections: Section[] = [
+      {
+        slug: null,
+        label: rootMeta.title ?? getDocStrings(lang).documentation,
+        sidebarItems,
+      },
+    ];
+    for (const entry of sectionEntries) {
+      const name = sectionName(entry);
+      const sectionDir = join(contentDir, name);
+      if (!existsSync(sectionDir) || !statSync(sectionDir).isDirectory()) {
+        throw new Error(
+          `tulldoc: раздел "${name}" в meta.json не указывает на папку верхнего уровня`,
+        );
+      }
+      const label =
+        (typeof entry !== "string" && entry.label) ||
+        readDirMeta(sectionDir).title ||
+        prettify(name);
+      sections.push({
+        slug: name,
+        label,
+        sidebarItems: scanDir(sectionDir, [name], null, undefined, plugins),
+      });
+    }
 
     const headerItems: HeaderItem[] = [];
     const headerNavItems: NavItem[] = [];
@@ -285,8 +344,12 @@ export const getNavigation = cache(
 
     return {
       sidebarItems,
+      sections,
       headerItems,
-      allItems: [...sidebarItems, ...headerNavItems],
+      allItems: [
+        ...sections.flatMap((section) => section.sidebarItems),
+        ...headerNavItems,
+      ],
     };
   },
 );

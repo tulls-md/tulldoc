@@ -24,10 +24,27 @@ export function DocLayout({
   plugins,
   repo,
 }: DocLayoutProps) {
-  const { sidebarItems, headerItems } = getNavigation(contentDir, plugins);
+  const { sidebarItems, sections, headerItems } = getNavigation(
+    contentDir,
+    plugins,
+    lang,
+  );
   const firstDoc = sidebarItems.find((item) => !item.external);
+  const hasSidebar = sections.some((section) =>
+    section.sidebarItems.some((item) => !item.external),
+  );
   // Шапку показываем, если есть её пункты или сайдбар - на мобиле в ней живёт бургер
-  const showHeader = headerItems.length > 0 || sidebarItems.length > 0;
+  const showHeader = headerItems.length > 0 || hasSidebar;
+
+  // Вкладки переключателя: ссылка на первую страницу раздела
+  const sectionTabs = sections
+    .map((section) => {
+      const first = section.sidebarItems.find((item) => !item.external);
+      return first
+        ? { slug: section.slug, label: section.label, href: itemHref(first) }
+        : null;
+    })
+    .filter((tab): tab is NonNullable<typeof tab> => tab !== null);
 
   return (
     <html lang={lang}>
@@ -36,12 +53,14 @@ export function DocLayout({
           {showHeader && (
             <Header
               items={headerItems}
-              hasSidebar={sidebarItems.length > 0}
+              hasSidebar={hasSidebar}
+              sections={sectionTabs}
               docsLink={
                 firstDoc
                   ? {
                       href: itemHref(firstDoc),
-                      label: getDocStrings(lang).documentation,
+                      // Подпись раздела по умолчанию: title корневого meta.json или "Документация"
+                      label: sections[0]?.label ?? getDocStrings(lang).documentation,
                     }
                   : undefined
               }
@@ -56,7 +75,10 @@ export function DocLayout({
             headerSlugs={headerItems
               .filter((item) => !item.external)
               .map((item) => item.slug)}
-            sidebar={<Sidebar items={sidebarItems} lang={lang} />}
+            sidebars={sections.map((section) => ({
+              slug: section.slug,
+              node: <Sidebar items={section.sidebarItems} lang={lang} />,
+            }))}
           >
             {children}
           </LayoutShell>

@@ -19,6 +19,7 @@ export default function ButtonDoc(): DocMeta<typeof Button> {
       { prop: "disabled", description: "Кастомный пример" },
       { prop: "variant", view: "grid" },
       { prop: "variant", view: "cell" },
+      { prop: "a", defaultArgs: { a: <div>Привет</div> } }
     ],
   };
 }

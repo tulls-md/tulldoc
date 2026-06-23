@@ -1,7 +1,8 @@
 {
-  "pages": ["overview", "getting-started", "mdx", "doc"],
-  "header": [
-    "for-whom",
-    "vs-storybook"
+  "title": "Начало работы",
+  "pages": ["overview", "for-whom", "vs-storybook", "getting-started", "sections"],
+  "sections": [
+    { "name": "mdx", "label": "Документация" },
+    { "name": "doc", "label": "Tulldoc Code" }
   ]
 }

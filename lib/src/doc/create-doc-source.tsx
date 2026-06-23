@@ -90,9 +90,13 @@ export function createDocSource({
     const file = resolveContentFile(contentDir, slugPath);
     if (!file) notFound();
 
-    const { sidebarItems, allItems } = getNavigation(contentDir, plugins);
+    const { sections, allItems } = getNavigation(contentDir, plugins);
     const { tabs, activeTab, docSlug } = resolveDocTabs(allItems, slug);
-    const { prev, next } = resolvePagination(sidebarItems, slugPath);
+    // Пагинация в пределах активного раздела (определяем по первому сегменту slug)
+    const activeSection =
+      sections.find((section) => section.slug === slug[0]) ??
+      sections.find((section) => section.slug === null)!;
+    const { prev, next } = resolvePagination(activeSection.sidebarItems, slugPath);
     const strings = getDocStrings(lang);
 
     const editHref = sourceHref(file.filePath);
@@ -169,8 +173,10 @@ export function createDocSource({
   }
 
   function IndexPage() {
-    const { sidebarItems } = getNavigation(contentDir, plugins);
-    const first = sidebarItems.find((item) => !item.external);
+    const { sections } = getNavigation(contentDir, plugins);
+    const first = sections
+      .flatMap((section) => section.sidebarItems)
+      .find((item) => !item.external);
     if (!first) notFound();
     redirect(itemHref(first));
   }

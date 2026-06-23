@@ -16,7 +16,7 @@ export interface NavItem {
 }
 
 export interface HeaderItem {
-  /** Slug верхнего уровня - для активности ссылки и скрытия сайдбара */
+  /** Slug верхнего уровня - для активности ссылки */
   slug: string;
   label: string;
   /** Ссылка пункта; у дропдауна отсутствует */
@@ -25,6 +25,14 @@ export interface HeaderItem {
   items?: { href: string; label: string; external?: true }[];
   /** Внешняя ссылка из meta.json - без страницы, открывается в новой вкладке */
   external?: true;
+}
+
+export interface Section {
+  /** URL-сегмент раздела; null у раздела по умолчанию (корневые файлы) */
+  slug: string | null;
+  label: string;
+  /** Боковое меню именно этого раздела */
+  sidebarItems: NavItem[];
 }
 
 export interface TocHeading {

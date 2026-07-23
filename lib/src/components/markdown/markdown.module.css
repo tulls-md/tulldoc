@@ -1,0 +1,18 @@
+/* Компактные отступы: описания живут в ячейках таблиц и под заголовками */
+.Root p {
+  margin: 0 0 var(--space-2x);
+}
+
+.Root ul,
+.Root ol {
+  margin: 0 0 var(--space-2x);
+  padding-inline-start: var(--space-8x);
+}
+
+.Root li p {
+  margin: 0;
+}
+
+.Root > :last-child {
+  margin-bottom: 0;
+}

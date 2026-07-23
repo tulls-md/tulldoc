@@ -1,0 +1,29 @@
+.Root {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 200px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.Root[data-loading] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.Header {
+  display: flex;
+  flex-direction: column;
+}
+
+.Subtitle {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.Content {
+  font-size: 14px;
+}

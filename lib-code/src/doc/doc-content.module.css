@@ -1,0 +1,21 @@
+.ExampleHeading {
+  display: flex;
+  gap: var(--space-4x);
+  align-items: center;
+}
+
+.PropChip {
+  text-decoration: none;
+}
+
+.PropChip code {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: normal;
+
+  color: var(--green-12);
+
+  background-color: var(--green-2);
+  border: 1px dashed var(--green-7);
+}

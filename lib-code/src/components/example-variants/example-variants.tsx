@@ -29,7 +29,7 @@ export function ExampleVariants({
   const showLabels = variants.length > 1;
   return (
     <div className={styles.Root}>
-      <Preview height={previewHeight}>
+      <Preview height={previewHeight} canvas={view !== "plain"}>
         <div
           className={clsx(
             styles.Items,

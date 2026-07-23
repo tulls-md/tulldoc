@@ -96,7 +96,10 @@ export function createDocSource({
     const activeSection =
       sections.find((section) => section.slug === slug[0]) ??
       sections.find((section) => section.slug === null)!;
-    const { prev, next } = resolvePagination(activeSection.sidebarItems, slugPath);
+    const { prev, next } = resolvePagination(
+      activeSection.sidebarItems,
+      slugPath,
+    );
     const strings = getDocStrings(lang);
 
     const editHref = sourceHref(file.filePath);

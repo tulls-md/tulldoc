@@ -7,9 +7,25 @@
   width: 100%;
 }
 
+.Root tr[id] {
+  scroll-margin-top: var(--space-8x);
+}
+
 .Required {
   color: var(--green-9);
   margin-left: 2px;
+}
+
+.Deprecated {
+  margin-left: var(--space-2x);
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-size: 11px;
+
+  color: var(--red-12, #641723);
+
+  background-color: var(--red-2, #fff7f7);
+  border: 1px dashed var(--red-7, #f3aeaf);
 }
 
 .Description {

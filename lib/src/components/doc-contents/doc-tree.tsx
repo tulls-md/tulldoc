@@ -19,7 +19,12 @@ interface DocTreeImplProps extends DocTreeProps {
  * Книжное содержание: вложенный список разделов, страниц и табов.
  * Данные строятся той же навигацией, что и сайдбар (buildContents).
  */
-export function DocTree({ contentDir, plugins, path, title }: DocTreeImplProps) {
+export function DocTree({
+  contentDir,
+  plugins,
+  path,
+  title,
+}: DocTreeImplProps) {
   const groups = buildContents(contentDir, { path, plugins });
 
   return (

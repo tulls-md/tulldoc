@@ -12,14 +12,22 @@ export default function ButtonDoc(): DocMeta<typeof Button> {
 
   return {
     component: Button,
+    description:
+      "Кнопка. Вариант оформления задаётся пропом `variant`, текст - " +
+      "пропом `label`.",
     defaultArgs: { label: "Click Me!" },
     mainExample: { label: "Click Me!", variant: "primary" },
     anatomy: AnatomyComponent,
     examples: [
       { prop: "disabled", description: "Кастомный пример" },
-      { prop: "variant", view: "grid" },
+      {
+        prop: "variant",
+        title: "Варианты оформления",
+        description: "Кастомный заголовок - имя пропа показано рядом.",
+        view: "grid",
+      },
       { prop: "variant", view: "cell" },
-      { prop: "a", defaultArgs: { a: <div>Привет</div> } }
+      { prop: "a", defaultArgs: { a: <div>Привет</div> } },
     ],
   };
 }

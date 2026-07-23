@@ -81,11 +81,11 @@ That's it — drop `.mdx` files into `src/content` and they become pages. See th
 
 ## Package entry points
 
-| Entry point                | Purpose                                              |
-| -------------------------- | ---------------------------------------------------- |
-| `@tulls-md/tulldoc`        | UI blocks and MDX utilities (client + server)        |
-| `@tulls-md/tulldoc/server` | Server helpers: `createDocSource`, `getNavItems`     |
-| `@tulls-md/tulldoc/config` | `withTulldoc` — the wrapper for `next.config.ts`     |
+| Entry point                | Purpose                                          |
+| -------------------------- | ------------------------------------------------ |
+| `@tulls-md/tulldoc`        | UI blocks and MDX utilities (client + server)    |
+| `@tulls-md/tulldoc/server` | Server helpers: `createDocSource`, `getNavItems` |
+| `@tulls-md/tulldoc/config` | `withTulldoc` — the wrapper for `next.config.ts` |
 
 ## Documenting components (addon)
 

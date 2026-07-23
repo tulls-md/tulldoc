@@ -1,6 +1,12 @@
 {
   "title": "Начало работы",
-  "pages": ["overview", "for-whom", "vs-storybook", "getting-started", "sections"],
+  "pages": [
+    "overview",
+    "for-whom",
+    "vs-storybook",
+    "getting-started",
+    "sections"
+  ],
   "sections": [
     { "name": "mdx", "label": "Документация" },
     { "name": "doc", "label": "Tulldoc Code" }

@@ -82,7 +82,13 @@ function toNode(
     };
   }
   const { description, cover } = readMeta(contentDir, item.slug, plugins);
-  return { slug: item.slug, href: itemHref(item), label: item.label, description, cover };
+  return {
+    slug: item.slug,
+    href: itemHref(item),
+    label: item.label,
+    description,
+    cover,
+  };
 }
 
 /**

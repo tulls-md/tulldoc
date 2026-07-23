@@ -35,11 +35,11 @@ The core ships only what an MDX documentation site needs. Code-analysis dependen
 
 ## Requirements
 
-| Dependency | Version    |
-|------------|------------|
-| `next`     | `>= 16`    |
-| `react`    | `>= 19`    |
-| `react-dom`| `>= 19`    |
+| Dependency  | Version |
+| ----------- | ------- |
+| `next`      | `>= 16` |
+| `react`     | `>= 19` |
+| `react-dom` | `>= 19` |
 
 These are **peer dependencies** — Tulldoc relies on the versions installed in your project.
 
@@ -110,11 +110,11 @@ That's it — drop `.mdx` files into `src/content` and they become pages. See th
 
 The core package, `@tulls-md/tulldoc`, exposes three entry points:
 
-| Entry point                | Purpose                                                  |
-|----------------------------|----------------------------------------------------------|
-| `@tulls-md/tulldoc`        | UI blocks and MDX utilities (client + server)            |
-| `@tulls-md/tulldoc/server` | Server helpers: `createDocSource`, `getNavItems`         |
-| `@tulls-md/tulldoc/config` | `withTulldoc` — the wrapper for `next.config.ts`         |
+| Entry point                | Purpose                                          |
+| -------------------------- | ------------------------------------------------ |
+| `@tulls-md/tulldoc`        | UI blocks and MDX utilities (client + server)    |
+| `@tulls-md/tulldoc/server` | Server helpers: `createDocSource`, `getNavItems` |
+| `@tulls-md/tulldoc/config` | `withTulldoc` — the wrapper for `next.config.ts` |
 
 ## Addon: `@tulls-md/tulldoc-code`
 
@@ -134,10 +134,10 @@ yarn add @tulls-md/tulldoc-code
 bun add @tulls-md/tulldoc-code
 ```
 
-| Entry point                     | Purpose                                                                  |
-|---------------------------------|--------------------------------------------------------------------------|
-| `@tulls-md/tulldoc-code`        | UI blocks: `PropsTable`, `ComponentPreview`, `ExampleVariants`, `Anatomy`|
-| `@tulls-md/tulldoc-code/server` | `componentDocs` plugin, `createComponentPreview` / `Examples` / `Props`  |
+| Entry point                     | Purpose                                                                   |
+| ------------------------------- | ------------------------------------------------------------------------- |
+| `@tulls-md/tulldoc-code`        | UI blocks: `PropsTable`, `ComponentPreview`, `ExampleVariants`, `Anatomy` |
+| `@tulls-md/tulldoc-code/server` | `componentDocs` plugin, `createComponentPreview` / `Examples` / `Props`   |
 
 Hook it into `createDocSource` as a plugin:
 
@@ -166,12 +166,12 @@ Without the addon, `.doc.tsx` documents are unavailable and `createDocSource` pr
 
 Tulldoc is a pnpm monorepo:
 
-| Package          | Description                                                   |
-|------------------|---------------------------------------------------------------|
-| `lib/`           | Core `@tulls-md/tulldoc` (the MDX site)                       |
-| `lib-code/`      | Addon `@tulls-md/tulldoc-code` (component documentation)      |
-| `documentation/` | The tulldoc documentation site (built with tulldoc itself)   |
-| `example/`       | An example documentation project                             |
+| Package          | Description                                                |
+| ---------------- | ---------------------------------------------------------- |
+| `lib/`           | Core `@tulls-md/tulldoc` (the MDX site)                    |
+| `lib-code/`      | Addon `@tulls-md/tulldoc-code` (component documentation)   |
+| `documentation/` | The tulldoc documentation site (built with tulldoc itself) |
+| `example/`       | An example documentation project                           |
 
 ## Development
 

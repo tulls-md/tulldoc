@@ -24,7 +24,16 @@ export type ResolvedExample =
       description?: string;
       element: ReactElement;
       staticName?: string;
+      /** undefined - вид выбирается по previewHeight при рендере */
+      view?: ExampleView;
     };
+
+export interface ResolvedSubcomponent {
+  id: string;
+  displayName: string;
+  description?: string;
+  source: { filePath: string; exportName: string };
+}
 
 type DistributiveOmit<T, K extends keyof T> = T extends unknown
   ? Omit<T, K>
@@ -40,6 +49,7 @@ export interface DocModel {
   mainExampleName?: string;
   source: { filePath: string; exportName: string };
   displayName: string;
+  subcomponents: ResolvedSubcomponent[];
 }
 
 /**
@@ -85,6 +95,7 @@ export function buildDocModel({
         description: entry.description,
         element: entry.example,
         staticName: staticInfo?.exampleNames[index],
+        view: entry.view,
       });
       return;
     }
@@ -140,6 +151,22 @@ export function buildDocModel({
     }
   }
   const apiId = addHeading(strings.api, 2);
+  const subcomponents: ResolvedSubcomponent[] = (meta.subcomponents ?? []).map(
+    (sub) => {
+      const subSource = resolveComponentSource(
+        componentsDir,
+        sub.component,
+        sub.componentName,
+      );
+      const subName = sub.componentName ?? subSource.exportName;
+      return {
+        id: addHeading(subName, 3),
+        displayName: subName,
+        description: sub.description,
+        source: subSource,
+      };
+    },
+  );
 
   return {
     title,
@@ -151,5 +178,6 @@ export function buildDocModel({
     mainExampleName: staticInfo?.mainExampleName,
     source,
     displayName,
+    subcomponents,
   };
 }

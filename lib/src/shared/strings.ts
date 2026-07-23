@@ -10,6 +10,7 @@ export interface DocStrings {
   hideCode: string;
   required: string;
   inheritedFrom: string;
+  deprecated: string;
   editPage: string;
   componentSource: string;
   documentedInTulls: string;
@@ -28,6 +29,7 @@ const ru: DocStrings = {
   hideCode: "Скрыть код",
   required: "обязательный",
   inheritedFrom: "Наследуется от",
+  deprecated: "устаревший",
   editPage: "Редактировать страницу",
   componentSource: "Исходник",
   documentedInTulls: "Задокументировано в Tulldoc",
@@ -46,6 +48,7 @@ const en: DocStrings = {
   hideCode: "Hide code",
   required: "required",
   inheritedFrom: "Inherited from",
+  deprecated: "deprecated",
   editPage: "Edit this page",
   componentSource: "Source",
   documentedInTulls: "Documented in Tulldoc",

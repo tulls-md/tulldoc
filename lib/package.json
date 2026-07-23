@@ -60,6 +60,9 @@
     "@phosphor-icons/react": "^2.1.10",
     "clsx": "^2.1.1",
     "gray-matter": "^4.0.3",
+    "mdast-util-from-markdown": "^2.0.3",
+    "mdast-util-gfm": "^3.1.0",
+    "micromark-extension-gfm": "^3.0.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.1",
     "remark-mdx-frontmatter": "^5.2.0",
@@ -72,6 +75,7 @@
     "react-dom": ">=19"
   },
   "devDependencies": {
+    "@types/mdast": "^4.0.4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

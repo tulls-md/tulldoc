@@ -129,14 +129,27 @@ const computeProps = createFileCache(
     for (const symbol of checker.getPropertiesOfType(propsType)) {
       const declaration = symbol.declarations?.find(ts.isPropertySignature);
       if (!declaration || isExternalDeclaration(declaration)) continue;
+      const tags = symbol.getJsDocTags(checker);
+      const tagText = (name: string): string | undefined => {
+        const tag = tags.find((tag) => tag.name === name);
+        return (tag && ts.displayPartsToString(tag.text)) || undefined;
+      };
+      const deprecatedTag = tags.find((tag) => tag.name === "deprecated");
       const row: PropRow = {
         name: symbol.name,
         type: propTypeText(declaration, checker),
         required: !declaration.questionToken,
-        defaultValue: defaults.get(symbol.name),
+        // Инициализатор деструктуризации - реальный рантайм-дефолт, он важнее
+        defaultValue:
+          defaults.get(symbol.name) ??
+          tagText("default") ??
+          tagText("defaultValue"),
         description:
           ts.displayPartsToString(symbol.getDocumentationComment(checker)) ||
           undefined,
+        deprecated: deprecatedTag
+          ? ts.displayPartsToString(deprecatedTag.text) || true
+          : undefined,
       };
       if (declaration.getSourceFile().fileName === sourceFile.fileName) {
         own.push(row);

@@ -67,7 +67,10 @@ export function extractCssVars(
     const [, rawComment, name, rawValue] = match;
     const value = rawValue.trim();
     const description = rawComment?.replace(/\s+/g, " ").trim();
-    byName.set(name, description ? { name, value, description } : { name, value });
+    byName.set(
+      name,
+      description ? { name, value, description } : { name, value },
+    );
   }
 
   let rows = [...byName.values()];

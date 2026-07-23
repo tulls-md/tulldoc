@@ -4,17 +4,13 @@
   gap: var(--space-4x);
 }
 
+/* Точечный фон и отступы задаёт Preview (canvas) */
 .Items {
   display: flex;
   gap: var(--space-12x);
   height: 100%;
-  padding: var(--space-8x);
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-
-  background-color: var(--gray-3);
-  background-image: radial-gradient(var(--gray-a6) 1px, transparent 1.6px);
-  background-size: 11px 11px;
 }
 
 .Grid {
@@ -60,7 +56,6 @@
 @media (max-width: 768px) {
   .Items {
     gap: var(--space-4x);
-    padding: var(--space-4x);
   }
 
   .Item {

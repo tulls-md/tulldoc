@@ -5,7 +5,7 @@ import {
   type ReactElement,
   type ReactNode,
 } from "react";
-import { DocNotice, Preview } from "@tulls-md/tulldoc";
+import { DocNotice, Markdown, Preview } from "@tulls-md/tulldoc";
 import { ComponentPreview } from "../components/component-preview/component-preview";
 import { ExampleVariants } from "../components/example-variants/example-variants";
 import { PropsTable } from "../components/props-table/props-table";
@@ -14,24 +14,33 @@ import { extractPreviewHeight } from "../examples/preview-height";
 import { extractComponentProps } from "../props/extract-props";
 import { extractPropValueInfo, isBooleanPair } from "../props/prop-values";
 import {
+  propAnchor,
+  propCodeLinks,
+  propsAnchorPrefix,
+} from "../shared/prop-anchors";
+import {
   componentValueName,
   serializeComponentJsx,
 } from "../shared/serialize-jsx";
 import type { DocStrings } from "@tulls-md/tulldoc";
+import type { ExampleView } from "../shared/types";
 import { resolveExampleSource } from "../sources/source-index";
 import type { DocModel, ResolvedExample } from "./build-model";
 import type { DocMeta } from "./doc-meta";
+import styles from "./doc-content.module.css";
 
 function ManualExample({
   element,
   staticName,
   examplesDir,
   strings,
+  view,
 }: {
   element: ReactElement;
   staticName?: string;
   examplesDir?: string;
   strings: DocStrings;
+  view?: ExampleView;
 }) {
   if (!examplesDir) {
     throw new Error(
@@ -45,6 +54,7 @@ function ManualExample({
       component={element}
       code={code}
       previewHeight={extractPreviewHeight(filePath)}
+      view={view}
       showCodeLabel={strings.showCode}
       hideCodeLabel={strings.hideCode}
     />
@@ -54,17 +64,38 @@ function ManualExample({
 function MainArgsExample({
   component,
   args,
+  displayName,
+  strings,
+  view = "grid",
 }: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component: ComponentType<any>;
   args: Record<string, unknown>;
+  displayName: string;
+  strings: DocStrings;
+  view?: ExampleView;
 }) {
   const { children, ...attrs } = args;
   const Component = component;
+  let code: string | undefined;
+  try {
+    code = serializeComponentJsx(displayName, attrs, children);
+  } catch {
+    // Несериализуемые пропсы - показываем пример без код-блока
+    code = undefined;
+  }
+  const element = <Component {...attrs}>{children as ReactNode}</Component>;
+  if (code === undefined) {
+    return <Preview canvas={view !== "plain"}>{element}</Preview>;
+  }
   return (
-    <Preview>
-      <Component {...attrs}>{children as ReactNode}</Component>
-    </Preview>
+    <ComponentPreview
+      component={element}
+      code={code}
+      view={view}
+      showCodeLabel={strings.showCode}
+      hideCodeLabel={strings.hideCode}
+    />
   );
 }
 
@@ -178,10 +209,15 @@ export function DocContent({
   strings: DocStrings;
   examplesDir?: string;
 }) {
+  const mainInfo = extractComponentProps(model.source);
+  const mainPrefix = propsAnchorPrefix(model.displayName);
+  const mainCodeLinks = propCodeLinks(mainInfo.rows, mainPrefix);
   return (
     <>
       <h1>{model.title}</h1>
-      {meta.description && <p>{meta.description}</p>}
+      {meta.description && (
+        <Markdown codeLinks={mainCodeLinks}>{meta.description}</Markdown>
+      )}
       {meta.mainExample &&
         (isValidElement(meta.mainExample) ? (
           <ManualExample
@@ -189,11 +225,15 @@ export function DocContent({
             staticName={model.mainExampleName}
             examplesDir={examplesDir}
             strings={strings}
+            view={meta.mainExampleView}
           />
         ) : (
           <MainArgsExample
             component={meta.component}
             args={meta.mainExample as Record<string, unknown>}
+            displayName={model.displayName}
+            strings={strings}
+            view={meta.mainExampleView}
           />
         ))}
       {meta.anatomy && (
@@ -205,37 +245,88 @@ export function DocContent({
       {model.examples.length > 0 && (
         <>
           <h2 id={model.examplesId}>{strings.examples}</h2>
-          {model.examples.map((example) => (
-            <Fragment key={example.id}>
-              <h3 id={example.id}>{example.title}</h3>
-              {example.description && <p>{example.description}</p>}
-              {example.kind === "manual" ? (
-                <ManualExample
-                  element={example.element}
-                  staticName={example.staticName}
-                  examplesDir={examplesDir}
-                  strings={strings}
-                />
-              ) : (
-                <AutoExample
-                  example={example}
-                  component={meta.component}
-                  source={model.source}
-                  displayName={model.displayName}
-                  strings={strings}
-                />
-              )}
-            </Fragment>
-          ))}
+          {model.examples.map((example) => {
+            const showPropChip =
+              example.kind === "auto" && example.title !== example.prop;
+            return (
+              <Fragment key={example.id}>
+                <h3
+                  id={example.id}
+                  className={showPropChip ? styles.ExampleHeading : undefined}
+                >
+                  {example.title}
+                  {showPropChip && (
+                    <a
+                      className={styles.PropChip}
+                      href={`#${propAnchor(mainPrefix, example.prop)}`}
+                    >
+                      <code>{example.prop}</code>
+                    </a>
+                  )}
+                </h3>
+                {example.description && (
+                  <Markdown codeLinks={mainCodeLinks}>
+                    {example.description}
+                  </Markdown>
+                )}
+                {example.kind === "manual" ? (
+                  <ManualExample
+                    element={example.element}
+                    staticName={example.staticName}
+                    examplesDir={examplesDir}
+                    strings={strings}
+                    view={example.view}
+                  />
+                ) : (
+                  <AutoExample
+                    example={example}
+                    component={meta.component}
+                    source={model.source}
+                    displayName={model.displayName}
+                    strings={strings}
+                  />
+                )}
+              </Fragment>
+            );
+          })}
         </>
       )}
       <h2 id={model.apiId}>{strings.api}</h2>
       <PropsTable
-        {...extractComponentProps(model.source)}
+        {...mainInfo}
+        anchorPrefix={mainPrefix}
+        codeLinks={mainCodeLinks}
         emptyText={strings.noProps}
         requiredLabel={strings.required}
         inheritedFromLabel={strings.inheritedFrom}
+        deprecatedLabel={strings.deprecated}
       />
+      {model.subcomponents.map((sub) => {
+        const info = extractComponentProps(sub.source);
+        const prefix = propsAnchorPrefix(sub.displayName);
+        // Свои пропы подкомпонента важнее одноимённых пропов главного
+        const codeLinks = {
+          ...mainCodeLinks,
+          ...propCodeLinks(info.rows, prefix),
+        };
+        return (
+          <Fragment key={sub.id}>
+            <h3 id={sub.id}>{sub.displayName}</h3>
+            {sub.description && (
+              <Markdown codeLinks={codeLinks}>{sub.description}</Markdown>
+            )}
+            <PropsTable
+              {...info}
+              anchorPrefix={prefix}
+              codeLinks={codeLinks}
+              emptyText={strings.noProps}
+              requiredLabel={strings.required}
+              inheritedFromLabel={strings.inheritedFrom}
+              deprecatedLabel={strings.deprecated}
+            />
+          </Fragment>
+        );
+      })}
     </>
   );
 }

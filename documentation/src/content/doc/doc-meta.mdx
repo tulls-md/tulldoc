@@ -16,9 +16,11 @@ interface DocMeta<C extends ComponentType<any>> {
   title?: string;
   description?: string;
   componentName?: string;
-  mainExample?: ReactElement;
+  mainExample?: ReactElement | Partial<ComponentProps<C>>;
+  mainExampleView?: ExampleView;
   defaultArgs?: Partial<ComponentProps<C>>;
   examples?: DocExample<ComponentProps<C>>[];
+  subcomponents?: DocSubcomponent[];
   anatomy?: ReactNode;
 }
 ```
@@ -46,7 +48,9 @@ return { component: Button, title: "Кнопка" };
 
 ### description
 
-Текстовое описание под заголовком.
+Описание под заголовком. Поддерживает markdown: `` `код` ``, **жирный**,
+_курсив_, ссылки и списки. Упоминание пропа в инлайн-коде становится ссылкой
+на его строку в таблице API.
 
 ### componentName
 
@@ -90,8 +94,29 @@ return {
 
 ### mainExample
 
-Главный пример, показываемый сразу под описанием, перед анатомией.
+Главный пример, показываемый сразу под описанием, перед анатомией:
+готовый компонент-пример (`ReactElement`) или объект пропсов, из которого
+пример и код-блок генерируются автоматически.
 Подробнее в разделе «Главный пример».
+
+### mainExampleView
+
+Вид главного примера: `"plain"` отключает точечный канвас.
+
+### subcomponents
+
+Подкомпоненты сборного компонента - для каждого в секции API рендерится
+отдельная таблица пропсов:
+
+```ts
+interface DocSubcomponent {
+  component: ComponentType<any>;
+  componentName?: string; // как у DocMeta.componentName
+  description?: string; // markdown
+}
+```
+
+Подробнее в разделе «Таблица API».
 
 ### anatomy
 

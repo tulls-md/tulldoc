@@ -8,4 +8,5 @@ export type {
   DocExample,
   DocAutoExample,
   DocManualExample,
+  DocSubcomponent,
 } from "./doc/doc-meta";

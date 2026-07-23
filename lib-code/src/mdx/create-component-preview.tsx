@@ -4,6 +4,7 @@ import { ComponentPreview } from "../components/component-preview/component-prev
 import { flattenExampleCode } from "../examples/flatten-code";
 import { extractPreviewHeight } from "../examples/preview-height";
 import { getDocStrings } from "@tulls-md/tulldoc";
+import type { ExampleView } from "../shared/types";
 
 type ImportFn = (path: string) => Promise<{ default: ComponentType }>;
 
@@ -13,7 +14,13 @@ export function createComponentPreview(
   lang?: string,
 ) {
   const strings = getDocStrings(lang);
-  return async function AppComponentPreview({ path }: { path: string }) {
+  return async function AppComponentPreview({
+    path,
+    view,
+  }: {
+    path: string;
+    view?: ExampleView;
+  }) {
     const filePath = join(examplesDir, `${path}.tsx`);
     const code = flattenExampleCode(filePath, examplesDir);
     const { default: Example } = await importFn(path);
@@ -22,6 +29,7 @@ export function createComponentPreview(
         component={<Example />}
         code={code}
         previewHeight={extractPreviewHeight(filePath)}
+        view={view}
         showCodeLabel={strings.showCode}
         hideCodeLabel={strings.hideCode}
       />

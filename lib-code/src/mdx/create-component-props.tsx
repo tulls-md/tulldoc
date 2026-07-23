@@ -1,6 +1,7 @@
 import { basename, join } from "path";
 import { PropsTable } from "../components/props-table/props-table";
 import { extractComponentProps } from "../props/extract-props";
+import { propCodeLinks, propsAnchorPrefix } from "../shared/prop-anchors";
 import { getDocStrings } from "@tulls-md/tulldoc";
 
 function pascalCase(value: string): string {
@@ -21,12 +22,17 @@ export function createComponentProps(componentsDir: string, lang?: string) {
   }) {
     const filePath = join(componentsDir, `${src}.tsx`);
     const exportName = name ?? pascalCase(basename(src));
+    const info = extractComponentProps({ filePath, exportName });
+    const anchorPrefix = propsAnchorPrefix(name ?? exportName);
     return (
       <PropsTable
-        {...extractComponentProps({ filePath, exportName })}
+        {...info}
+        anchorPrefix={anchorPrefix}
+        codeLinks={propCodeLinks(info.rows, anchorPrefix)}
         emptyText={strings.noProps}
         requiredLabel={strings.required}
         inheritedFromLabel={strings.inheritedFrom}
+        deprecatedLabel={strings.deprecated}
       />
     );
   };

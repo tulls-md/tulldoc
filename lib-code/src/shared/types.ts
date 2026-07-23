@@ -3,7 +3,8 @@
  * их из исходников, компоненты только отображают.
  */
 
-export type ExampleView = "grid" | "cell";
+/** grid и cell - раскладка вариантов на точечном канвасе, plain - без канваса */
+export type ExampleView = "grid" | "cell" | "plain";
 
 export interface PropRow {
   name: string;
@@ -11,6 +12,8 @@ export interface PropRow {
   required: boolean;
   defaultValue?: string;
   description?: string;
+  /** Текст JSDoc-тега @deprecated или true для тега без текста */
+  deprecated?: string | true;
 }
 
 export interface ComponentPropsInfo {

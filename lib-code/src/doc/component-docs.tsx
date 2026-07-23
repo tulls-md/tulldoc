@@ -67,7 +67,11 @@ export function componentDocs({
       const model = buildDocModel({ meta, strings, componentsDir, staticInfo });
       // Отдельный repo компонентов имеет приоритет; иначе - repo документации
       const componentHref = repo
-        ? buildSourceUrl(repo, model.source.filePath, findGitRoot(componentsDir))
+        ? buildSourceUrl(
+            repo,
+            model.source.filePath,
+            findGitRoot(componentsDir),
+          )
         : sourceUrl?.(model.source.filePath);
       return {
         headings: model.headings,

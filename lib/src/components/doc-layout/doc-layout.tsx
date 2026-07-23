@@ -60,7 +60,8 @@ export function DocLayout({
                   ? {
                       href: itemHref(firstDoc),
                       // Подпись раздела по умолчанию: title корневого meta.json или "Документация"
-                      label: sections[0]?.label ?? getDocStrings(lang).documentation,
+                      label:
+                        sections[0]?.label ?? getDocStrings(lang).documentation,
                     }
                   : undefined
               }
